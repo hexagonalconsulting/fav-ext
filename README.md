@@ -11,8 +11,9 @@ This allows to use redux almost like a typical react-redux app.
 Install the dependencies using `npm install` or using yarn simply run `yarn`
 
 ## Generate the code for the extension using webpack
-To generate the code that will be use by the chrome extension using webpack run `npm run build`, or with yarn `yarn run build`. This
-will generate the code that you will use for your chrome extension in the directory `./dist` out of the js code in the `./src` directory.
+run the shell command `bin/build`
+ 
+This will generate the code that you will use for your chrome extension in the directory `./dist` out of the js code in the `./src` directory.
 
 
 ### about the repo's directory structure

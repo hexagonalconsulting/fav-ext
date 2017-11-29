@@ -1,0 +1,12 @@
+echo 'set -e ---------------------------------------------'
+set -e
+
+echo 'npm install ----------------------------------------'
+npm install
+
+echo 'yarn run build  ------------------------------------'
+yarn run build
+
+echo 'Extention has been generated in dist folder'
+echo 'Go to chrome://extensions/ and load it'
+echo 'DONE'
