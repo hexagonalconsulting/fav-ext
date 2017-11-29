@@ -1,0 +1,23 @@
+{
+  "manifest_version": 2,
+  "name": "PutTheNameHere",
+  "description": "Put a description here",
+  "version": "0.0.0.1",
+  "background": {
+    "scripts": [
+      "reduxRelated.js"
+    ],
+    "persistent": true
+  },
+  "browser_action": {
+    "default_title": "Put a title here",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"], // The extension will appear in all pages matching this pattern.
+      "css": [],
+      "js": ["content.js"]
+    }
+  ]
+}

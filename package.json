@@ -1,0 +1,36 @@
+{
+  "name": "simple-boiler-plate-react-redux-extension",
+  "version": "0.0.1",
+  "description": "Just some boiler plate code to use react inside a chrome extension",
+  "scripts": {
+    "test": "jest",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git"
+  },
+  "keywords": [
+    "Chrome",
+    "extension",
+    "react",
+    "redux",
+    "webpack",
+    "setup"
+  ],
+  "author": "Miguel Salas",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-jest": "^21.2.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-react": "^6.24.1",
+    "jest": "^21.2.1",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-test-renderer": "^16.0.0",
+    "webpack": "^3.6.0"
+  }
+}
