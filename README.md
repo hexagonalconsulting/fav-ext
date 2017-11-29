@@ -22,3 +22,5 @@ are generated with webpack (running `npm run build` or `yarn run build`). Basica
 correlative source file in the `./src` directory, then the directory named after each one of them, then `index.js`.
 If you take a look at `./webpack.config.js` you will see all it does is take each one of these `index.js` file, and produce the
 related file inside the `./dist` directory.
+
+Inside the `./src` directory, `./popup` contains the code related to the popup of the extension, `./content` is the code related to the [content script](https://developer.chrome.com/extensions/content_scripts), and `./reduxRelated` well,  pretty self explanatory, as said before, this uses `react-chrome-redux` what allows to connect the `content` and `popup` scripts to the redux store that is running as the [background page](https://developer.chrome.com/extensions/background_pages) of the extension, in this case is just a script.
