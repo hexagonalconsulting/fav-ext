@@ -15,7 +15,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://*/*"], // The extension will appear in all pages matching this pattern.
+      "matches": ["*://*.dev.faveod.com/*"], // The extension will appear in all pages matching this pattern.
       "css": [],
       "js": ["content.js"]
     }
