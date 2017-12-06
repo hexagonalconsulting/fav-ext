@@ -28,6 +28,7 @@
     "babel-preset-env": "^1.6.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
     "jest": "^21.2.1",
     "react": "^16.0.0",
     "react-chrome-redux": "^1.4.0",
@@ -38,6 +39,7 @@
     "webpack": "^3.6.0"
   },
   "dependencies": {
-    "axios": "^0.17.1"
+    "axios": "^0.17.1",
+    "react-toggle-button": "^2.2.0"
   }
 }
