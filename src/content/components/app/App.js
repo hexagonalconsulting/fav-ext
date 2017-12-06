@@ -18,6 +18,15 @@ class App extends Component {
     this.setState({ autoRefresh: !autoRefresh })
   };
 
+  shouldAutoRefresh = (lastUpdated) => {
+    const { lastUpdated: tabLastUpdated, autoRefresh }  = this.state;
+
+    if ( autoRefresh && ( lastUpdated !== tabLastUpdated ) ) {
+      location.reload(true)
+    }
+
+  };
+
   componentWillMount() {
 
     api.fetchChecksumLastUpdatedAt(document.location.origin)
@@ -38,7 +47,9 @@ class App extends Component {
     const domain = document.location.origin;
     const lastUpdated = domains[domain] ? domains[domain].lastUpdated : null;
     const { lastUpdated: tabLastUpdated, autoRefresh }  = this.state;
-    const { toggleAutoRefresh } = this;
+    const { toggleAutoRefresh, shouldAutoRefresh } = this;
+
+    shouldAutoRefresh(lastUpdated);
 
     return (
       <div>
