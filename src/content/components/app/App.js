@@ -1,23 +1,40 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import api from '../../../utils/api'
+import updateSite from '../../../reduxRelated/actions/index'
 
 class App extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      lastUpdated: null
+    }
   }
 
-  componentDidMount() {
-    document.addEventListener('click', () => {
-      this.props.dispatch({
-        type: 'ADD_COUNT'
-      });
-    });
+  componentWillMount() {
+
+    api.fetchChecksumLastUpdatedAt(document.location.origin)
+      .then(
+        lastUpdated => {
+
+          const site = document.location.origin;
+          this.props.dispatch(updateSite({ site , lastUpdated }));
+          this.setState({lastUpdated})
+
+        }
+      );
   }
 
   render() {
+
+    const domains = this.props.domains;
+    const domain = document.location.origin;
+    const lastUpdated = domains[domain] ? domains[domain].lastUpdated : null;
+    const { lastUpdated: tabLastUpdated }  = this.state;
+
     return (
       <div>
-        Count: {this.props.count}
+        App last updated: { lastUpdated }, Tab last updated: {tabLastUpdated} {lastUpdated === tabLastUpdated && 'Up to date'}
       </div>
     );
   }
@@ -25,7 +42,7 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    count: state.count
+    domains: state.domains ? state.domains : {}
   };
 };
 
