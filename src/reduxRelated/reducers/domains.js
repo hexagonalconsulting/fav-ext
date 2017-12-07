@@ -13,8 +13,8 @@ export default function (state = {}, action) {
 
         ...state,
         [site]: {
-          lastUpdated,
-          ...state[site]
+          ...state[site],
+          lastUpdated
         }
 
       };
