@@ -1,4 +1,3 @@
-import {dispatch} from 'redux'
 import api  from '../../utils/api'
 import updateSite  from '../actions/'
 
@@ -7,7 +6,7 @@ export default function (store) {
   Object.keys(domains).forEach( site => (
     api.fetchChecksumLastUpdatedAt(site)
       .then(
-        lastUpdated => dispatch( updateSite({site, lastUpdated}) )
+        lastUpdated => store.dispatch( updateSite({site, lastUpdated}) )
       )
   ))
 }
