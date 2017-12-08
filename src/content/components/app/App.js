@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import ToggleButton from 'react-toggle-button'
 import api from '../../../utils/api'
-import updateSite, {toggleAutoRefresh} from '../../../reduxRelated/actions/index'
+import updateSite, {toggleAutoRefresh, toggleAutoUpdate} from '../../../reduxRelated/actions/index'
 
 class App extends Component {
   constructor(props) {
@@ -16,6 +16,10 @@ class App extends Component {
 
   _toggleAutoRefresh = (autoRefresh) => {
     this.props.dispatch( toggleAutoRefresh({ site: this.domain , autoRefresh: !autoRefresh }) );
+  };
+
+  handleToggleAutoUpdate =  autoUpdate  => {
+    this.props.dispatch( toggleAutoUpdate({ site: this.domain , autoUpdate: !autoUpdate }) );
   };
 
   shouldAutoRefresh = (lastUpdated, autoRefresh) => {
@@ -62,13 +66,18 @@ class App extends Component {
 
     const {domains, tabs} = this.props;
     const {domain} = this;
-    let lastUpdated, autoRefresh;
+    let lastUpdated, autoRefresh, autoUpdate;
 
-    const { _toggleAutoRefresh, shouldAutoRefresh } = this;
+    const {
+      _toggleAutoRefresh,
+      shouldAutoRefresh,
+      handleToggleAutoUpdate
+    } = this;
     const { lastUpdated: tabLastUpdated, tabId }  = this.state;
 
     if (domains && domains[domain]) {
       lastUpdated = domains[domain].lastUpdated;
+      autoUpdate  = domains[domain].autoUpdate;
       autoRefresh = (  (tabs  || {} )[tabId]  || {}  ).autoRefresh;
       autoRefresh =   !!autoRefresh ;
       shouldAutoRefresh(lastUpdated, autoRefresh);
@@ -77,11 +86,22 @@ class App extends Component {
 
     return (
       <div>
-        App last updated: { lastUpdated }, Tab last updated: {tabLastUpdated} {lastUpdated === tabLastUpdated && 'Up to date'}, Auto refresh :
-        <ToggleButton
-          value={ autoRefresh }
-          onToggle={ () => _toggleAutoRefresh(autoRefresh) }
-        />
+        App last updated: { lastUpdated }, Tab last updated: {tabLastUpdated} {lastUpdated === tabLastUpdated && 'Up to date'},
+
+        <div>
+          Auto refresh :
+          <ToggleButton
+            value={ autoRefresh }
+            onToggle={ () => _toggleAutoRefresh(autoRefresh) }
+          />
+        </div>
+        <div>
+          Setup polling to get when this app was last updated:
+          <ToggleButton
+            value={ autoUpdate }
+            onToggle={ () => handleToggleAutoUpdate(autoUpdate) }
+          />
+        </div>
       </div>
     );
   }
