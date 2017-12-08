@@ -70,6 +70,7 @@ class App extends Component {
 
     const {domains, tabs} = this.props;
     const {domain} = this;
+    const thisDomainData = domains[domain];
     let lastUpdated, autoRefresh, autoUpdate;
 
     const {
@@ -80,9 +81,9 @@ class App extends Component {
     } = this;
     const { lastUpdated: tabLastUpdated, tabId }  = this.state;
 
-    if (domains && domains[domain]) {
-      lastUpdated = domains[domain].lastUpdated;
-      autoUpdate  = domains[domain].autoUpdate;
+    if (domains && thisDomainData) {
+      lastUpdated = thisDomainData.lastUpdated;
+      autoUpdate  = thisDomainData.autoUpdate;
       autoRefresh = (  (tabs  || {} )[tabId]  || {}  ).autoRefresh;
       autoRefresh =   !!autoRefresh ;
       shouldAutoRefresh(lastUpdated, autoRefresh);
