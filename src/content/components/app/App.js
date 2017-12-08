@@ -14,7 +14,7 @@ class App extends Component {
     this.domain = document.location.origin
   }
 
-  _toggleAutoRefresh = (autoRefresh) => {
+  handleToggleAutoRefresh = (autoRefresh) => {
     this.props.dispatch( toggleAutoRefresh({ site: this.domain , autoRefresh: !autoRefresh }) );
   };
 
@@ -73,7 +73,7 @@ class App extends Component {
     let lastUpdated, autoRefresh, autoUpdate;
 
     const {
-      _toggleAutoRefresh,
+      handleToggleAutoRefresh,
       shouldAutoRefresh,
       handleToggleAutoUpdate,
       neitherIsNull
@@ -104,7 +104,7 @@ class App extends Component {
           Auto refresh :
           <ToggleButton
             value={ autoRefresh }
-            onToggle={ () => _toggleAutoRefresh(autoRefresh) }
+            onToggle={ () => handleToggleAutoRefresh(autoRefresh) }
           />
         </div>
         <div>
