@@ -1,4 +1,8 @@
-import { UPDATE_SITE, TOGGLE_AUTOREFRESH } from '../actions/index'
+import {
+  UPDATE_SITE,
+  TOGGLE_AUTOREFRESH,
+  TOGGLE_UPDATES_FROM_SITE
+} from '../actions/index'
 
 export default function (state = {}, action) {
 
@@ -32,6 +36,17 @@ export default function (state = {}, action) {
               autoRefresh,
             }
           }
+        }
+      };
+
+    case TOGGLE_UPDATES_FROM_SITE:
+      const { autoUpdate } = action;
+
+      return {
+        ...state,
+        [site]: {
+          ...state[site],
+          autoUpdate
         }
       };
 
