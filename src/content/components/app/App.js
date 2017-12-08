@@ -24,8 +24,10 @@ class App extends Component {
 
   shouldAutoRefresh = (lastUpdated, autoRefresh) => {
     const { lastUpdated: tabLastUpdated }  = this.state;
+    const { neitherIsNull }  = this;
+
     if (
-      !(lastUpdated === null || tabLastUpdated === null) && // Only if neither is null,
+       neitherIsNull(lastUpdated, tabLastUpdated) &&        // Only if neither is null,
        (autoRefresh && ( lastUpdated !== tabLastUpdated) )  // and auto refresh is true and they are different.
     ) {
       location.reload(true);
@@ -62,6 +64,8 @@ class App extends Component {
 
   }
 
+  neitherIsNull = (argOne, argTwo) => !(argOne === null || argTwo === null);
+
   render() {
 
     const {domains, tabs} = this.props;
@@ -71,7 +75,8 @@ class App extends Component {
     const {
       _toggleAutoRefresh,
       shouldAutoRefresh,
-      handleToggleAutoUpdate
+      handleToggleAutoUpdate,
+      neitherIsNull
     } = this;
     const { lastUpdated: tabLastUpdated, tabId }  = this.state;
 
@@ -86,7 +91,14 @@ class App extends Component {
 
     return (
       <div>
-        App last updated: { lastUpdated }, Tab last updated: {tabLastUpdated} {lastUpdated === tabLastUpdated && 'Up to date'},
+        App last updated: { lastUpdated }, Tab last updated: {tabLastUpdated} {' '}
+        <span style={{ fontWeight: 'bold' }}>
+          { neitherIsNull(lastUpdated, tabLastUpdated) &&
+            lastUpdated === tabLastUpdated
+              ? 'UP TO DATE'
+              : 'NOT UP TO DATE'
+          }
+        </span>,
 
         <div>
           Auto refresh :
