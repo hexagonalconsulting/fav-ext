@@ -1,8 +1,8 @@
 import api  from '../../utils/api'
-import updateSite  from '../actions/'
+import updateSite from '../actions/index'
 
 export default function (store) {
-  const domains = store.getState.domains ? store.getState.domains : {} ;
+  const domains = store.getState().domains ? store.getState().domains : {} ;
   Object.keys(domains).forEach( site => (
     api.fetchChecksumLastUpdatedAt(site)
       .then(
