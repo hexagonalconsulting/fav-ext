@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import ToggleButton from 'react-toggle-button'
 import api from '../../../utils/api'
 import updateSite, {toggleAutoRefresh, toggleAutoUpdate} from '../../../reduxRelated/actions/index'
+import { SET_LISTENER_WATCH_FOR_TAB_CLOSED } from '../../../reduxRelated/actions/backgroundActions'
 
 class App extends Component {
   constructor(props) {
@@ -51,6 +52,7 @@ class App extends Component {
     // This ask the background page, (in our case a script) for the tab id in which the component is running.
     chrome.runtime.sendMessage({ request: "get tabId" }, ({tabId}) => {
       this.setState({tabId});
+      this.props.dispatch({ type: SET_LISTENER_WATCH_FOR_TAB_CLOSED })
     })
   };
 
