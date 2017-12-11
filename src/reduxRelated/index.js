@@ -1,9 +1,25 @@
-import {createStore} from 'redux';
-import {wrapStore} from 'react-chrome-redux';
+import {createStore, applyMiddleware} from 'redux';
+import {wrapStore, alias} from 'react-chrome-redux';
 import rootReducer from './reducers';
 import updateDomainsData from './update/domains'
+import {SET_LISTENER_WATCH_FOR_TAB_CLOSED, setListenerWatchForTabClosed} from "./actions/backgroundActions";
 
-const store = createStore(rootReducer, {});
+
+const aliases = {
+  // this key is the name of the action to proxy, the value is the action
+  // creator that gets executed when the proxied action is received in the
+  // background.
+  SET_LISTENER_WATCH_FOR_TAB_CLOSED : setListenerWatchForTabClosed
+};
+
+
+
+const store = createStore(
+  rootReducer,
+  applyMiddleware(
+    alias(aliases)
+  )
+);
 
 wrapStore(store, {
   portName: 'example'
