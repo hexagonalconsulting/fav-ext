@@ -3,44 +3,32 @@ import {
   deleteTabData,
   setTabAsWatchedForTabClosedEvent
 } from './index'
+
 function asyncWatchForClosedTab(action) {
-    return function (dispatch, getState) {
-        console.log('state', getState());
-        console.log('dispatch', dispatch);
-        console.log(action);
-        const state = getState();
-        const { domains } = state;
-        const { domain } = action;
-        const {id: tabId } = action._sender.tab;
 
-        console.log('tabId', tabId);
+  return function (dispatch, getState) {
 
-        // this set of variables is used to determine if  the boolean `watchedForCloseEvent` for this tabId
-        // is present in the  redux state. Expressions with the structure: `(object || {})[property]`
-        // are there to avoid errors caused by trying to read properties not existent in the related object,
-        // double negations (!!) are there to take the boolean value if the result of the expression is undefined: !!undefined => false.
-        const thereIsDomainData = !!(domains || {})[domain];
-        const thereIsTabsData =  !!(thereIsDomainData &&  (domains[domain] || {})['tabs']);
-        const thereIsDataForThisTab =  !!(thereIsTabsData &&  (domains[domain]['tabs'] || {})[tabId]);
-        const tabIsAlreadyWatchedForCloseEvent =  !!(thereIsDataForThisTab &&  (domains[domain]['tabs'][tabId] || {})['watchedForCloseEvent']);
+    const state = getState();
+    const { domains } = state;
+    const { domain } = action;
+    const {id: tabId } = action._sender.tab;
 
-        if (tabIsAlreadyWatchedForCloseEvent) {
+    // this set of variables is used to determine if  the boolean `watchedForCloseEvent` for this tabId
+    // is present in the  redux state. Expressions with the structure: `(object || {})[property]`
+    // are there to avoid errors caused by trying to read properties not existent in the related object,
+    // double negations (!!) are there to take the boolean value if the result of the expression is undefined: !!undefined => false.
+    const thereIsDomainData = !!(domains || {})[domain];
+    const thereIsTabsData =  !!(thereIsDomainData &&  (domains[domain] || {})['tabs']);
+    const thereIsDataForThisTab =  !!(thereIsTabsData &&  (domains[domain]['tabs'] || {})[tabId]);
+    const tabIsAlreadyWatchedForCloseEvent =  !!(thereIsDataForThisTab &&  (domains[domain]['tabs'][tabId] || {})['watchedForCloseEvent']);
 
-            console.log('enter case: tabIsAlreadyWatchedForCloseEvent');
-            console.log(tabIsAlreadyWatchedForCloseEvent)
+    if (!tabIsAlreadyWatchedForCloseEvent) {
 
-        } else {
+        addListenerForTabCloseEvent({ tabId, dispatch, site: domain});
+        dispatch( setTabAsWatchedForTabClosedEvent({ tabId, site: domain}) )
 
-            console.log('enter case: !tabIsAlreadyWatchedForCloseEvent');
-            console.log(tabIsAlreadyWatchedForCloseEvent);
-            addListenerForTabCloseEvent({ tabId, dispatch, site: domain});
-            dispatch( setTabAsWatchedForTabClosedEvent({ tabId, site: domain}) )
-
-        }
-        return {
-            type: 'hello'
-        }
     }
+  }
 }
 
 export function setListenerWatchForTabClosed (action) {
@@ -50,7 +38,6 @@ export function setListenerWatchForTabClosed (action) {
 function addListenerForTabCloseEvent({ tabId, dispatch, site}) {
   chrome.tabs.onRemoved.addListener( (tabIdClosed) => {
     if (tabId === tabIdClosed) {
-      console.log(`dispatch deleteTabData ${tabId}`);
       dispatch(deleteTabData({ site, tabId}))
     }
   })
