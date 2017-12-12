@@ -2,7 +2,8 @@ import {
   UPDATE_SITE,
   TOGGLE_AUTOREFRESH,
   TOGGLE_UPDATES_FROM_SITE,
-  DELETE_TAB_DATA
+  DELETE_TAB_DATA,
+  SET_TAB_AS_WATCHED_FOR_TAB_CLOSED_EVENT
 } from '../actions/index'
 
 export default function (state = {}, action) {
@@ -72,6 +73,25 @@ export default function (state = {}, action) {
       } else {
         throw `Something went wrong in the reducer, case DELETE_TAB_DATA:  deleting ${tabIdToDelete} from ${JSON.stringify(deepCopyOfTabsInState)}`;
       }
+
+    case SET_TAB_AS_WATCHED_FOR_TAB_CLOSED_EVENT:
+
+      const tabsExists = !!( (state[site] || {} )['tabs'] );
+      const { tabId: tabIdWatchedForCloseEvent } = action;
+      const tabIdEntryExist = !!( tabsExists && (state[site]['tabs'] || {} )[tabIdWatchedForCloseEvent]);
+      return {
+        ...state,
+        [site]: {
+          ...state[site],
+          tabs: {
+            ...(tabsExists ? state[site]['tabs'] : {}),
+            [tabIdWatchedForCloseEvent]: {
+              ...(tabIdEntryExist ? state[site]['tabs'][tabIdWatchedForCloseEvent] : {} ),
+              watchedForCloseEvent: true
+            }
+          }
+        }
+      };
 
     default:
 
