@@ -1,4 +1,5 @@
 export const SET_LISTENER_WATCH_FOR_TAB_CLOSED   = 'SET_LISTENER_WATCH_FOR_TAB_CLOSED';
+import {deleteTabData} from './index'
 function asyncWatchForClosedTab(action) {
     return function (dispatch, getState) {
         console.log('state', getState());
@@ -28,7 +29,8 @@ function asyncWatchForClosedTab(action) {
         } else {
 
             console.log('enter case: !tabIsAlreadyWatchedForCloseEvent');
-            console.log(tabIsAlreadyWatchedForCloseEvent)
+            console.log(tabIsAlreadyWatchedForCloseEvent);
+            addListenerForTabCloseEvent({ tabId, dispatch, site: domain})
 
         }
         return {
@@ -39,4 +41,13 @@ function asyncWatchForClosedTab(action) {
 
 export function setListenerWatchForTabClosed (action) {
     return asyncWatchForClosedTab(action)
+}
+
+function addListenerForTabCloseEvent({ tabId, dispatch, site}) {
+  chrome.tabs.onRemoved.addListener( (tabIdClosed) => {
+    if (tabId === tabIdClosed) {
+      console.log(`dispatch deleteTabData ${tabId}`);
+      dispatch(deleteTabData({ site, tabId}))
+    }
+  })
 }
