@@ -52,13 +52,29 @@ class App extends Component {
     // This ask the background page, (in our case a script) for the tab id in which the component is running.
     chrome.runtime.sendMessage({ request: "get tabId" }, ({tabId}) => {
       this.setState({tabId});
-      this.props.dispatch({ type: SET_LISTENER_WATCH_FOR_TAB_CLOSED })
     })
+  };
+
+  watchForThisTabOnCloseEvent = () => {
+
+    const { domain } = this;
+    const { dispatch } = this.props;
+    // this sets initiates the alias action of type 'SET_LISTENER_WATCH_FOR_TAB_CLOSED',
+    // which will setup add listener on the close event of this tab to delete the key for this tab from the redux state,
+    // but only if it is not already set.
+    dispatch({ type: SET_LISTENER_WATCH_FOR_TAB_CLOSED, domain })
+
   };
 
   componentDidMount() {
 
-    const {fetchAppLastUpdatedTimestamp, requestTabId} = this;
+    const {
+      fetchAppLastUpdatedTimestamp,
+      requestTabId,
+      watchForThisTabOnCloseEvent
+    } = this;
+
+    watchForThisTabOnCloseEvent();
 
     fetchAppLastUpdatedTimestamp();
 
