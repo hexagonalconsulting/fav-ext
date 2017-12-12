@@ -1,5 +1,6 @@
 import {createStore, applyMiddleware} from 'redux';
 import {wrapStore, alias} from 'react-chrome-redux';
+import thunk from 'redux-thunk';
 import rootReducer from './reducers';
 import updateDomainsData from './update/domains'
 import {SET_LISTENER_WATCH_FOR_TAB_CLOSED, setListenerWatchForTabClosed} from "./actions/backgroundActions";
@@ -17,7 +18,8 @@ const aliases = {
 const store = createStore(
   rootReducer,
   applyMiddleware(
-    alias(aliases)
+    alias(aliases),
+    thunk
   )
 );
 

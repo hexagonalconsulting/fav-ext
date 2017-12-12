@@ -40,6 +40,7 @@
   },
   "dependencies": {
     "axios": "^0.17.1",
-    "react-toggle-button": "^2.2.0"
+    "react-toggle-button": "^2.2.0",
+    "redux-thunk": "^2.2.0"
   }
 }
