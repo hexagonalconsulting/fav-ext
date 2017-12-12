@@ -1,5 +1,8 @@
 export const SET_LISTENER_WATCH_FOR_TAB_CLOSED   = 'SET_LISTENER_WATCH_FOR_TAB_CLOSED';
-import {deleteTabData} from './index'
+import {
+  deleteTabData,
+  setTabAsWatchedForTabClosedEvent
+} from './index'
 function asyncWatchForClosedTab(action) {
     return function (dispatch, getState) {
         console.log('state', getState());
@@ -30,7 +33,8 @@ function asyncWatchForClosedTab(action) {
 
             console.log('enter case: !tabIsAlreadyWatchedForCloseEvent');
             console.log(tabIsAlreadyWatchedForCloseEvent);
-            addListenerForTabCloseEvent({ tabId, dispatch, site: domain})
+            addListenerForTabCloseEvent({ tabId, dispatch, site: domain});
+            dispatch( setTabAsWatchedForTabClosedEvent({ tabId, site: domain}) )
 
         }
         return {
