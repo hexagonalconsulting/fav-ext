@@ -1,7 +1,8 @@
 import {
   UPDATE_SITE,
   TOGGLE_AUTOREFRESH,
-  TOGGLE_UPDATES_FROM_SITE
+  TOGGLE_UPDATES_FROM_SITE,
+  DELETE_TAB_DATA
 } from '../actions/index'
 
 export default function (state = {}, action) {
@@ -50,6 +51,27 @@ export default function (state = {}, action) {
         }
       };
 
+    case DELETE_TAB_DATA:
+
+      const { tabId: tabIdToDelete } = action;
+      const deepCopyOfTabs = JSON.parse(JSON.stringify(state[site].tabs));
+
+      // `delete` operator will return true on successful deletion, else false.
+      if (delete deepCopyOfTabs[tabIdToDelete]) {
+
+        return {
+          ...state,
+          [site]: {
+            ...state[site],
+            tabs: {
+              ...deepCopyOfTabs // Which by this time in execution does not contain `tabIdToDelete`.
+            }
+          }
+        };
+
+      } else {
+        throw `Something went wrong in the reducer, case DELETE_TAB_DATA:  deleting ${tabIdToDelete} from ${JSON.stringify(deepCopyOfTabsInState)}`;
+      }
 
     default:
 
