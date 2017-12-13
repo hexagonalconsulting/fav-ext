@@ -35,6 +35,7 @@ export default function (state = {}, action) {
           tabs: {
             ...state[site].tabs,
             [tabId]: {
+              ...state[site].tabs[tabId],
               autoRefresh,
             }
           }
