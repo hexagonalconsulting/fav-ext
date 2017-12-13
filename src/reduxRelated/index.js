@@ -17,6 +17,7 @@ const aliases = {
 
 const logger = createLogger({
   collapsed: true,
+  diff: true,
 });
 
 const store = createStore(
