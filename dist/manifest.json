@@ -19,5 +19,8 @@
       "css": [],
       "js": ["content.js"]
     }
+  ],
+  "permissions": [
+    "tabs"
   ]
 }
