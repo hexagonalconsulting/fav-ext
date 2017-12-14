@@ -46,7 +46,7 @@ function addListenerForTabCloseEvent({ tabId, dispatch, site}) {
 }
 
 function addListenerForTabUpdatedEvent({ tabId, dispatch, domain}) {
-  chrome.tabs.onUpdated.addListener( (tabIdUpdated, changedInfo, tab) => {
+  chrome.tabs.onUpdated.addListener( (tabIdUpdated, changedInfo) => {
     if (tabId === tabIdUpdated) {
       const {url, status} = changedInfo;
       if (
@@ -55,7 +55,7 @@ function addListenerForTabUpdatedEvent({ tabId, dispatch, domain}) {
         status        === "loading" && // we intercept only the loading status of the tab.
         !url.includes(domain)          // url does not contain the domain we are tracking.
       ){
-        // TODO: dispatch DELETE_TAB_DATA
+        dispatch( deleteTabData( { site: domain, tabId} ) )
       }
     }
   })
