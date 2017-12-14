@@ -3,12 +3,15 @@ import {
   TOGGLE_AUTOREFRESH,
   TOGGLE_UPDATES_FROM_SITE,
   DELETE_TAB_DATA,
-  SET_TAB_AS_WATCHED_FOR_TAB_CLOSED_EVENT
+  SET_TAB_AS_WATCHED_FOR_TAB_CLOSED_EVENT,
+  SET_TAB_AS_WATCHED_FOR_TAB_UPDATED_EVENT
 } from '../actions/index'
 
 export default function (state = {}, action) {
 
   const { site } = action;
+  const tabsExists = !!( (state[site] || {} )['tabs'] );
+  let tabIdEntryExist;
 
   switch (action.type) {
 
@@ -77,9 +80,8 @@ export default function (state = {}, action) {
 
     case SET_TAB_AS_WATCHED_FOR_TAB_CLOSED_EVENT:
 
-      const tabsExists = !!( (state[site] || {} )['tabs'] );
       const { tabId: tabIdWatchedForCloseEvent } = action;
-      const tabIdEntryExist = !!( tabsExists && (state[site]['tabs'] || {} )[tabIdWatchedForCloseEvent]);
+      tabIdEntryExist = !!( tabsExists && (state[site]['tabs'] || {} )[tabIdWatchedForCloseEvent]);
       return {
         ...state,
         [site]: {
@@ -89,6 +91,25 @@ export default function (state = {}, action) {
             [tabIdWatchedForCloseEvent]: {
               ...(tabIdEntryExist ? state[site]['tabs'][tabIdWatchedForCloseEvent] : {} ),
               watchedForCloseEvent: true
+            }
+          }
+        }
+      };
+
+    case  SET_TAB_AS_WATCHED_FOR_TAB_UPDATED_EVENT:
+
+      const { tabId: tabIdWatchedForUpdatedEvent } = action;
+      tabIdEntryExist = !!( tabsExists && (state[site]['tabs'] || {} )[tabIdWatchedForUpdatedEvent]);
+
+      return {
+        ...state,
+        [site]: {
+          ...state[site],
+          tabs: {
+            ...(tabsExists ? state[site]['tabs'] : {}),
+            [tabIdWatchedForUpdatedEvent]: {
+              ...(tabIdEntryExist ? state[site]['tabs'][tabIdWatchedForUpdatedEvent] : {} ),
+              watchedForUpdatedEvent: true
             }
           }
         }

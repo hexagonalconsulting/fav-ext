@@ -80,7 +80,7 @@ function asyncWatchForTabUpdated(action) {
     if (!tabIsAlreadyWatchedForUpdatedEvent) {
 
       addListenerForTabUpdatedEvent({ tabId, dispatch, domain});
-      dispatch( setTabAsWatchedForTabUpdatedEvent({ tabId, domain}) )
+      dispatch( setTabAsWatchedForTabUpdatedEvent({ tabId, site: domain }) )
 
     }
   }
