@@ -3,7 +3,10 @@ import {connect} from 'react-redux';
 import ToggleButton from 'react-toggle-button'
 import api from '../../../utils/api'
 import updateSite, {toggleAutoRefresh, toggleAutoUpdate} from '../../../reduxRelated/actions/index'
-import { SET_LISTENER_WATCH_FOR_TAB_CLOSED } from '../../../reduxRelated/actions/backgroundActions'
+import {
+  SET_LISTENER_WATCH_FOR_TAB_CLOSED,
+  SET_LISTENER_WATCH_FOR_TAB_UPDATED
+} from '../../../reduxRelated/actions/backgroundActions'
 
 class App extends Component {
   constructor(props) {
@@ -66,15 +69,27 @@ class App extends Component {
 
   };
 
+  watchForThisTabOnUpdatedEvent = () => {
+
+    const { domain } = this;
+    const { dispatch } = this.props;
+
+    dispatch({ type: SET_LISTENER_WATCH_FOR_TAB_UPDATED, domain })
+
+  };
+
   componentDidMount() {
 
     const {
       fetchAppLastUpdatedTimestamp,
       requestTabId,
-      watchForThisTabOnCloseEvent
+      watchForThisTabOnCloseEvent,
+      watchForThisTabOnUpdatedEvent,
     } = this;
 
     watchForThisTabOnCloseEvent();
+
+    watchForThisTabOnUpdatedEvent();
 
     fetchAppLastUpdatedTimestamp();
 
