@@ -28,12 +28,11 @@ class App extends Component {
     this.props.dispatch( toggleAutoUpdate({ site: this.domain , autoUpdate: !autoUpdate }) );
   };
 
-  shouldAutoRefresh = (lastUpdated, autoRefresh) => {
+  shouldAutoRefresh = (lastUpdated, autoRefresh, timestampsNeitherIsNull) => {
     const { lastUpdated: tabLastUpdated }  = this.state;
-    const { neitherIsNull }  = this;
 
     if (
-       neitherIsNull(lastUpdated, tabLastUpdated) &&        // Only if neither is null,
+       timestampsNeitherIsNull &&        // Only if neither is null,
        (autoRefresh && ( lastUpdated !== tabLastUpdated) )  // and auto refresh is true and they are different.
     ) {
       location.reload(true);
@@ -106,7 +105,13 @@ class App extends Component {
     const {domains, tabs} = this.props;
     const {domain} = this;
     const thisDomainData = domains[domain];
-    let lastUpdated, autoRefresh, autoUpdate;
+    let
+      lastUpdated,
+      autoRefresh,
+      autoUpdate,
+      timestampsNeitherIsNull,
+      upToDateIndicatorColor,
+      timestampsAreEqual;
 
     const {
       handleToggleAutoRefresh,
@@ -121,7 +126,10 @@ class App extends Component {
       autoUpdate  = thisDomainData.autoUpdate;
       autoRefresh = (  (tabs  || {} )[tabId]  || {}  ).autoRefresh;
       autoRefresh =   !!autoRefresh ;
-      shouldAutoRefresh(lastUpdated, autoRefresh);
+
+      timestampsNeitherIsNull = neitherIsNull(lastUpdated, tabLastUpdated);
+
+      shouldAutoRefresh(lastUpdated, autoRefresh, timestampsNeitherIsNull);
     }
 
     const flexContainer = {
@@ -133,6 +141,13 @@ class App extends Component {
       paddingBottom: 10,
       paddingTop: 10,
     };
+
+    timestampsAreEqual = lastUpdated === tabLastUpdated;
+
+    // Color code meanings, upToDateIndicatorColor will either be:
+    //'#00C851' => green success
+    //'#ffbb33' => orange warning
+    timestampsNeitherIsNull && ( upToDateIndicatorColor = { color: timestampsAreEqual ? '#00C851' : '#ffbb33' });
 
     const pulseLoader = (
 
@@ -158,11 +173,10 @@ class App extends Component {
           { !!tabLastUpdated ? <TimeAgo datetime={tabLastUpdated} locale='en' style={{ fontWeight: 'bold' }}/> : pulseLoader }
         </div>
 
-        <div style={{ fontWeight: 'bold', width: 150, textAlign: 'center' }}>
-          { neitherIsNull(lastUpdated, tabLastUpdated) &&
-            lastUpdated === tabLastUpdated
+        <div style={ {...{ fontWeight: 'bold', width: 150, textAlign: 'center' }, ...upToDateIndicatorColor} }>
+          { timestampsNeitherIsNull && (timestampsAreEqual
               ? 'UP TO DATE'
-              : 'NOT UP TO DATE'
+              : 'NOT UP TO DATE')
           }
         </div>
 
