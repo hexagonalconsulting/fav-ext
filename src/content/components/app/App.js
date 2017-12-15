@@ -150,7 +150,7 @@ class App extends Component {
            </span>
         </div>
 
-        <div style={{ fontWeight: 'bold' }}>
+        <div style={{ fontWeight: 'bold', width: 150, textAlign: 'center' }}>
           { neitherIsNull(lastUpdated, tabLastUpdated) &&
             lastUpdated === tabLastUpdated
               ? 'UP TO DATE'
