@@ -130,6 +130,8 @@ class App extends Component {
       justifyContent: 'space-between',
       paddingLeft: 24,
       paddingRight: 24,
+      paddingBottom: 10,
+      paddingTop: 10,
     };
 
     const pulseLoader = (
