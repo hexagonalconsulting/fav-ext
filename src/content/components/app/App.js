@@ -159,16 +159,17 @@ class App extends Component {
 
     const autoRefreshPopupMessage = "When is on, the page will refresh automatically if it is not up to date with the app.";
     const autoUpdatePopupMessage  = "Automatically get data from the app to figure out when it is updated.";
+    const timestampContainerStyle = { width: 240};
 
     return (
       <div style={flexContainer}>
 
-        <div>
+        <div style={timestampContainerStyle}>
           App last updated:{' '}
           { !!lastUpdated ? <TimeAgo datetime={lastUpdated} locale='en' style={{ fontWeight: 'bold' }}/> : pulseLoader }
         </div>
 
-        <div>
+        <div style={timestampContainerStyle}>
           Tab last updated:{' '}
           { !!tabLastUpdated ? <TimeAgo datetime={tabLastUpdated} locale='en' style={{ fontWeight: 'bold' }}/> : pulseLoader }
         </div>
