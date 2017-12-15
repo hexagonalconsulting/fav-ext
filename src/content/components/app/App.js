@@ -122,32 +122,53 @@ class App extends Component {
       shouldAutoRefresh(lastUpdated, autoRefresh);
     }
 
+    const flexContainer = {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'space-between'
+    };
 
     return (
-      <div>
-        App last updated: { lastUpdated }, Tab last updated: {tabLastUpdated} {' '}
-        <span style={{ fontWeight: 'bold' }}>
+      <div style={flexContainer}>
+
+        <div>
+          App last updated:{' '}
+          <span style={{ fontWeight: 'bold' }}>
+            { lastUpdated }
+          </span>
+        </div>
+
+        <div>
+          Tab last updated:{' '}
+           <span style={{ fontWeight: 'bold' }}>
+             {tabLastUpdated}
+           </span>
+        </div>
+
+        <div style={{ fontWeight: 'bold' }}>
           { neitherIsNull(lastUpdated, tabLastUpdated) &&
             lastUpdated === tabLastUpdated
               ? 'UP TO DATE'
               : 'NOT UP TO DATE'
           }
-        </span>,
+        </div>
 
-        <div>
-          Auto refresh :
+        <div title="When is on, the page will refresh automatically if it is not up to date with the app.">
+          Auto refresh:
           <ToggleButton
             value={ autoRefresh }
             onToggle={ () => handleToggleAutoRefresh(autoRefresh) }
           />
         </div>
-        <div>
-          Setup polling to get when this app was last updated:
+
+        <div title="Automatically get data from the app to figure out when it is updated.">
+          Automatic polling:
           <ToggleButton
             value={ autoUpdate }
             onToggle={ () => handleToggleAutoUpdate(autoUpdate) }
           />
         </div>
+
       </div>
     );
   }
