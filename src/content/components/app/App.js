@@ -139,14 +139,12 @@ class App extends Component {
 
         <div>
           App last updated:{' '}
-          <span style={{ fontWeight: 'bold' }}>
-            <TimeAgo datetime={lastUpdated} locale='en' style={{ fontWeight: 'bold' }}/>
-          </span>
+          {!!lastUpdated && <TimeAgo datetime={lastUpdated} locale='en' style={{ fontWeight: 'bold' }}/>}
         </div>
 
         <div>
           Tab last updated:{' '}
-          <TimeAgo datetime={tabLastUpdated} locale='en' style={{ fontWeight: 'bold' }}/>
+          {!!tabLastUpdated && <TimeAgo datetime={tabLastUpdated} locale='en' style={{ fontWeight: 'bold' }}/>}
         </div>
 
         <div style={{ fontWeight: 'bold', width: 150, textAlign: 'center' }}>
