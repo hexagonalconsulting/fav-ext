@@ -125,7 +125,9 @@ class App extends Component {
     const flexContainer = {
       display: 'flex',
       flexDirection: 'row',
-      justifyContent: 'space-between'
+      justifyContent: 'space-between',
+      paddingLeft: 24,
+      paddingRight: 24,
     };
 
     const autoRefreshPopupMessage = "When is on, the page will refresh automatically if it is not up to date with the app.";
