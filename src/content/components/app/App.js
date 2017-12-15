@@ -159,19 +159,24 @@ class App extends Component {
         </div>
 
         <div title={autoRefreshPopupMessage}>
-          Auto refresh:
-          <ToggleButton
-            value={ autoRefresh }
-            onToggle={ () => handleToggleAutoRefresh(autoRefresh) }
-          />
+          Auto refresh:{' '}
+          <div style={{ display: 'inline-block' }}>
+            <ToggleButton
+              value={ autoRefresh }
+              onToggle={ () => handleToggleAutoRefresh(autoRefresh) }
+            />
+          </div>
         </div>
 
         <div title={autoUpdatePopupMessage}>
-          Automatic polling:
-          <ToggleButton
-            value={ autoUpdate }
-            onToggle={ () => handleToggleAutoUpdate(autoUpdate) }
-          />
+          Automatic polling:{' '}
+          <div style={{ display: 'inline-block' }}>
+            <ToggleButton
+              value={ autoUpdate }
+              onToggle={ () => handleToggleAutoUpdate(autoUpdate) }
+            />
+          </div>
+
         </div>
 
       </div>
