@@ -174,6 +174,7 @@ class App extends Component {
         </div>
 
         <div style={ {...{ fontWeight: 'bold', width: 150, textAlign: 'center' }, ...upToDateIndicatorColor} }>
+          { !timestampsNeitherIsNull && pulseLoader /* Show the pulseLoader as long either of the timestamps is null. */}
           { timestampsNeitherIsNull && (timestampsAreEqual
               ? 'UP TO DATE'
               : 'NOT UP TO DATE')
