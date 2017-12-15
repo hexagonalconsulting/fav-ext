@@ -128,6 +128,9 @@ class App extends Component {
       justifyContent: 'space-between'
     };
 
+    const autoRefreshPopupMessage = "When is on, the page will refresh automatically if it is not up to date with the app.";
+    const autoUpdatePopupMessage  = "Automatically get data from the app to figure out when it is updated.";
+
     return (
       <div style={flexContainer}>
 
@@ -153,7 +156,7 @@ class App extends Component {
           }
         </div>
 
-        <div title="When is on, the page will refresh automatically if it is not up to date with the app.">
+        <div title={autoRefreshPopupMessage}>
           Auto refresh:
           <ToggleButton
             value={ autoRefresh }
@@ -161,7 +164,7 @@ class App extends Component {
           />
         </div>
 
-        <div title="Automatically get data from the app to figure out when it is updated.">
+        <div title={autoUpdatePopupMessage}>
           Automatic polling:
           <ToggleButton
             value={ autoUpdate }
