@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import ToggleButton from 'react-toggle-button'
 import api from '../../../utils/api'
+import TimeAgo from 'timeago-react'
 import updateSite, {toggleAutoRefresh, toggleAutoUpdate} from '../../../reduxRelated/actions/index'
 import {
   SET_LISTENER_WATCH_FOR_TAB_CLOSED,
@@ -139,15 +140,13 @@ class App extends Component {
         <div>
           App last updated:{' '}
           <span style={{ fontWeight: 'bold' }}>
-            { lastUpdated }
+            <TimeAgo datetime={lastUpdated} locale='en' style={{ fontWeight: 'bold' }}/>
           </span>
         </div>
 
         <div>
           Tab last updated:{' '}
-           <span style={{ fontWeight: 'bold' }}>
-             {tabLastUpdated}
-           </span>
+          <TimeAgo datetime={tabLastUpdated} locale='en' style={{ fontWeight: 'bold' }}/>
         </div>
 
         <div style={{ fontWeight: 'bold', width: 150, textAlign: 'center' }}>
