@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import ToggleButton from 'react-toggle-button'
 import api from '../../../utils/api'
 import TimeAgo from 'timeago-react'
+import { PulseLoader } from 'react-spinners';
 import updateSite, {toggleAutoRefresh, toggleAutoUpdate} from '../../../reduxRelated/actions/index'
 import {
   SET_LISTENER_WATCH_FOR_TAB_CLOSED,
@@ -131,6 +132,14 @@ class App extends Component {
       paddingRight: 24,
     };
 
+    const pulseLoader = (
+
+      <div style={{ display: 'inline-block' }}>
+        <PulseLoader size={3} margin={'2px'} />
+      </div>
+
+    );
+
     const autoRefreshPopupMessage = "When is on, the page will refresh automatically if it is not up to date with the app.";
     const autoUpdatePopupMessage  = "Automatically get data from the app to figure out when it is updated.";
 
@@ -139,12 +148,12 @@ class App extends Component {
 
         <div>
           App last updated:{' '}
-          {!!lastUpdated && <TimeAgo datetime={lastUpdated} locale='en' style={{ fontWeight: 'bold' }}/>}
+          { !!lastUpdated ? <TimeAgo datetime={lastUpdated} locale='en' style={{ fontWeight: 'bold' }}/> : pulseLoader }
         </div>
 
         <div>
           Tab last updated:{' '}
-          {!!tabLastUpdated && <TimeAgo datetime={tabLastUpdated} locale='en' style={{ fontWeight: 'bold' }}/>}
+          { !!tabLastUpdated ? <TimeAgo datetime={tabLastUpdated} locale='en' style={{ fontWeight: 'bold' }}/> : pulseLoader }
         </div>
 
         <div style={{ fontWeight: 'bold', width: 150, textAlign: 'center' }}>
