@@ -45,7 +45,6 @@ export default function (state = {}, action) {
     case SET_TAB_AS_WATCHED_FOR_TAB_CLOSED_EVENT:
 
       const { tabId: tabIdWatchedForCloseEvent } = action;
-      tabIdEntryExist = !!( tabsExists && (state[site]['tabs'] || {} )[tabIdWatchedForCloseEvent]);
       return {
         ...state,
       };
