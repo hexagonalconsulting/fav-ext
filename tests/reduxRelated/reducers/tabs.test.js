@@ -1,21 +1,7 @@
 import tabs from '../../../src/reduxRelated/reducers/tabs'
 import updateSite from '../../../src/reduxRelated/actions/index'
+import { addTabInfoToAction } from './utils'
 let  expectedNextState, previousState, action, reducerOutput;
-
-// in execution time the tab info will be added to the action data by react-chrome-redux logic,
-// here we are just doing a minimal emulation of it.
-function addTabInfoToAction(action) {
- return {
-   ...action,
-   ...{
-     _sender: {
-       tab: {
-         id: 1
-       }
-     }
-   }
- }
-}
 
 describe('UPDATE_SITE  action', () =>{
 
