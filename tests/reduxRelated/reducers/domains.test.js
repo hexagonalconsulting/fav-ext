@@ -1,9 +1,9 @@
 import domains from '../../../src/reduxRelated/reducers/domains'
-import updateSite, { toggleAutoUpdate } from '../../../src/reduxRelated/actions/index'
+import updateSite, { toggleAutoUpdate, deleteTabData } from '../../../src/reduxRelated/actions/index'
 let  expectedNextState, previousState, action, reducerOutput;
 import { addTabInfoToAction } from './utils'
 
-describe('UPDATE_SITE  action', () =>{
+describe('UPDATE_SITE  action', () => {
 
   test('It updates the lastUpdated field in the related existent domain object.' +
      ' It also adds the tabId to the related domain object.', () => {
@@ -165,6 +165,90 @@ describe('UPDATE_SITE  action', () => {
         autoUpdate: false,
         lastUpdated: "2017-12-22T18:00:24+01:00",
         tabsIds: [1]
+      }
+    };
+
+    reducerOutput = domains(previousState, action);
+
+    expect(reducerOutput).toEqual(expectedNextState)
+  })
+
+});
+
+describe('DELETE_TAB_DATA action', () => {
+
+  test('deletes tabId from related  domain object associated tabsIds', () => {
+
+    action = addTabInfoToAction(
+      deleteTabData({
+        site: 'http://mydomain.com',
+        tabId: 1
+      })
+    );
+
+    previousState = {
+      'http://otherdomain.com': {
+        lastUpdated: "2017-12-22T18:00:24+01:00",
+        tabsIds: [2],
+        autoUpdate: false,
+      },
+      'http://mydomain.com': {
+        lastUpdated: "2017-12-22T18:00:24+01:00",
+        tabsIds: [1],
+        autoUpdate: true
+      }
+    };
+
+    expectedNextState = {
+      'http://otherdomain.com': {
+        lastUpdated: "2017-12-22T18:00:24+01:00",
+        tabsIds: [2],
+        autoUpdate: false
+      },
+      'http://mydomain.com': {
+        lastUpdated: "2017-12-22T18:00:24+01:00",
+        tabsIds: [],
+        autoUpdate: true
+      }
+    };
+
+    reducerOutput = domains(previousState, action);
+
+    expect(reducerOutput).toEqual(expectedNextState)
+  });
+
+  test('does preserve other ids present in the tabsIds array while deletes tabId', () => {
+
+    action = addTabInfoToAction(
+      deleteTabData({
+        site: 'http://mydomain.com',
+        tabId: 1
+      })
+    );
+
+    previousState = {
+      'http://otherdomain.com': {
+        lastUpdated: "2017-12-22T18:00:24+01:00",
+        tabsIds: [2],
+        autoUpdate: false,
+      },
+      'http://mydomain.com': {
+        lastUpdated: "2017-12-22T18:00:24+01:00",
+        tabsIds: [1,3,4,5],
+        autoUpdate: true
+      }
+    };
+
+    expectedNextState = {
+      'http://otherdomain.com': {
+        lastUpdated: "2017-12-22T18:00:24+01:00",
+        tabsIds: [2],
+        autoUpdate: false
+      },
+      'http://mydomain.com': {
+        lastUpdated: "2017-12-22T18:00:24+01:00",
+        tabsIds: [3,4,5],
+        autoUpdate: true
       }
     };
 

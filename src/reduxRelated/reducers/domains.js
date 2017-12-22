@@ -5,6 +5,7 @@ import {
   SET_TAB_AS_WATCHED_FOR_TAB_CLOSED_EVENT,
   SET_TAB_AS_WATCHED_FOR_TAB_UPDATED_EVENT
 } from '../actions/index'
+import tabsIds from "./tabsIds";
 
 export default function (state = {}, action) {
 
@@ -44,12 +45,15 @@ export default function (state = {}, action) {
 
     case DELETE_TAB_DATA:
 
-      const { tabId: tabIdToDelete } = action;
+      const filteredTabsIds = state[site].tabsIds.filter( (existentTabId) => existentTabId !== tabId);
 
-        return {
-          ...state,
-        };
-
+      return {
+        ...state,
+        [site]: {
+          ...state[site],
+          tabsIds: filteredTabsIds
+        }
+      };
     case SET_TAB_AS_WATCHED_FOR_TAB_CLOSED_EVENT:
 
       const { tabId: tabIdWatchedForCloseEvent } = action;
