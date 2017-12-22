@@ -18,6 +18,10 @@ export default function (state = {}, action) {
 
       return {
         ...state,
+        [site]: {
+          ...state[site],
+          lastUpdated
+        }
       };
 
     case TOGGLE_AUTOREFRESH:
