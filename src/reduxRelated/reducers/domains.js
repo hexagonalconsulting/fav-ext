@@ -10,22 +10,29 @@ import {
 export default function (state = {}, action) {
 
   const { site } = action;
+  let tabId;
+  if(action._sender) {
+    tabId = action._sender.tab.id;
+  }
 
   switch (action.type) {
 
     case UPDATE_SITE:
       const { lastUpdated } = action;
+      let existingTabIds;
+      existingTabIds = state[site] ? [...state[site].tabsIds] : [];
+      existingTabIds = existingTabIds.filter((existingtabId) => existingtabId !== tabId);
 
       return {
         ...state,
         [site]: {
           ...state[site],
-          lastUpdated
+          lastUpdated,
+          tabsIds: [...existingTabIds, tabId]
         }
       };
 
     case TOGGLE_AUTOREFRESH:
-      const tabId = action._sender.tab.id;
       const { autoRefresh } = action;
       return {
         ...state,
