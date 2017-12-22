@@ -21,7 +21,7 @@ class App extends Component {
   }
 
   handleToggleAutoRefresh = (autoRefresh) => {
-    this.props.dispatch( toggleAutoRefresh({ site: this.domain , autoRefresh: !autoRefresh }) );
+    this.props.dispatch( toggleAutoRefresh({ autoRefresh: !autoRefresh }) );
   };
 
   handleToggleAutoUpdate =  autoUpdate  => {

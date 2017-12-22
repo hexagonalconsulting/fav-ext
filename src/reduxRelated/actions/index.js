@@ -13,10 +13,9 @@ export default function updateSite({ site, lastUpdated }) {
   }
 }
 
-export function toggleAutoRefresh({ site, autoRefresh }) {
+export function toggleAutoRefresh({ autoRefresh }) {
   return {
     type: TOGGLE_AUTOREFRESH,
-    site,
     autoRefresh,
   }
 }

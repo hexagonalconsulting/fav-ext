@@ -89,7 +89,6 @@ describe('TOGGLE_AUTOREFRESH  action', () => {
 
   test('creates the autoRefresh field in the related tab object', () => {
     action = addTabInfoToAction(toggleAutoRefresh({
-      site: 'http://mydomain.com',
       autoRefresh: true,
     }));
 
@@ -116,7 +115,6 @@ describe('TOGGLE_AUTOREFRESH  action', () => {
 
   test('updates the autoRefresh field in the related tab object', () => {
     action = addTabInfoToAction(toggleAutoRefresh({
-      site: 'http://mydomain.com',
       autoRefresh: false,
     }));
 
@@ -144,7 +142,6 @@ describe('TOGGLE_AUTOREFRESH  action', () => {
 
   test('works and preserves other tab object data', () => {
     action = addTabInfoToAction(toggleAutoRefresh({
-      site: 'http://mydomain.com',
       autoRefresh: false,
     }));
 
