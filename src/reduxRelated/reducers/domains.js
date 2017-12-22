@@ -43,6 +43,10 @@ export default function (state = {}, action) {
 
       return {
         ...state,
+        [site] : {
+          ...state[site],
+          autoUpdate
+        }
       };
 
     case DELETE_TAB_DATA:
