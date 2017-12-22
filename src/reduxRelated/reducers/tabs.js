@@ -1,5 +1,6 @@
 import {
-  UPDATE_SITE
+  UPDATE_SITE,
+  TOGGLE_AUTOREFRESH,
 } from '../actions/index'
 
 export default function (state = {}, action) {
@@ -16,6 +17,16 @@ export default function (state = {}, action) {
         ...state,
         [tabId]: {
           ...state[tabId]
+        }
+      };
+
+    case TOGGLE_AUTOREFRESH:
+      const { autoRefresh } = action;
+      return {
+        ...state,
+        [tabId]: {
+          ...state[tabId],
+          autoRefresh
         }
       };
 

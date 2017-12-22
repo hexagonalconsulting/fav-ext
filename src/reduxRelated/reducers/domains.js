@@ -1,6 +1,5 @@
 import {
   UPDATE_SITE,
-  TOGGLE_AUTOREFRESH,
   TOGGLE_UPDATES_FROM_SITE,
   DELETE_TAB_DATA,
   SET_TAB_AS_WATCHED_FOR_TAB_CLOSED_EVENT,
@@ -30,12 +29,6 @@ export default function (state = {}, action) {
           lastUpdated,
           tabsIds: [...existingTabIds, tabId]
         }
-      };
-
-    case TOGGLE_AUTOREFRESH:
-      const { autoRefresh } = action;
-      return {
-        ...state,
       };
 
     case TOGGLE_UPDATES_FROM_SITE:
