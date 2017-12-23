@@ -26,8 +26,19 @@ describe('UPDATE_SITE  action', () =>{
     reducerOutput = domainsId(previousState, action);
 
     expect(reducerOutput).toEqual(expectedNextState)
-  })
+  });
 
+  test('it adds domainId should not be duplicated in the state', () => {
+    action = updateSite({site: 'http://mydomain.com', lastUpdated: "2017-12-22T19:43:24+01:00"});
+
+    previousState = ['http://mydomain.com'];
+
+    expectedNextState = ['http://mydomain.com'];
+
+    reducerOutput = domainsId(previousState, action);
+
+    expect(reducerOutput).toEqual(expectedNextState)
+  })
 
 
 });

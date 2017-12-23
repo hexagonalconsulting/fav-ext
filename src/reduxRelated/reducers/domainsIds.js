@@ -10,7 +10,7 @@ export default function (state = [], action) {
 
     case UPDATE_SITE:
 
-      return [...state, site];
+      return [...state.filter(alreadyIncludedSite => alreadyIncludedSite !== site), site];
 
     default:
 
