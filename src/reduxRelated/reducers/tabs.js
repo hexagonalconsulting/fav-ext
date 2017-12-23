@@ -34,6 +34,7 @@ export default function (state = {}, action) {
       };
 
     case DELETE_TAB_DATA:
+      tabId = action.tabId;
       const nextState = {...state};
       delete nextState[tabId];
       return nextState;

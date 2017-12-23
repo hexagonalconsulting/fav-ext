@@ -188,10 +188,10 @@ describe('DELETE_TAB_DATA  action', () => {
 
   test('works and preserves other tab object data', () => {
 
-    action = addTabInfoToAction(deleteTabData({
+    action = deleteTabData({
       site: 'http://mydomain.com',
       tabId: 1
-    }));
+    });
 
     previousState = {
       '1': {
