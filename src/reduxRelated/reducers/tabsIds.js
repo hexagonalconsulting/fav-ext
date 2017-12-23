@@ -13,7 +13,7 @@ export default function (state = [], action) {
 
     case UPDATE_SITE:
 
-      return [ ...state, tabId ];
+      return [ ...state.filter( existentTabId => existentTabId !== tabId), tabId ];
 
     case DELETE_TAB_DATA:
       tabId = action.tabId;

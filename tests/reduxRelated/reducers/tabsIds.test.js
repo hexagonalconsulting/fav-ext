@@ -38,6 +38,22 @@ describe('UPDATE_SITE  action', () =>{
     expect(reducerOutput).toEqual(expectedNextState)
   });
 
+
+  test('does not add the same tabId twice', () => {
+
+    action = addTabInfoToAction(updateSite({
+      site: 'http://mydomain.com',
+      lastUpdated: "2017-12-22T19:43:24+01:00",
+    }));
+
+    previousState = [1];
+
+    expectedNextState = [1];
+
+    reducerOutput = tabsIds(previousState, action);
+
+    expect(reducerOutput).toEqual(expectedNextState)
+  });
 });
 
 
