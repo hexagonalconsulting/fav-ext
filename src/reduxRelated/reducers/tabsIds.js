@@ -1,4 +1,7 @@
-import {UPDATE_SITE} from "../actions";
+import {
+  UPDATE_SITE,
+  DELETE_TAB_DATA
+} from "../actions";
 
 export default function (state = [], action) {
   let tabId;
@@ -7,9 +10,15 @@ export default function (state = [], action) {
   }
 
   switch (action.type) {
+
     case UPDATE_SITE:
 
       return [ ...state, tabId ];
+
+    case DELETE_TAB_DATA:
+      tabId = action.tabId;
+
+      return state.filter( existentTabId => existentTabId !== tabId);
 
     default:
 

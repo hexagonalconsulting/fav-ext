@@ -1,5 +1,5 @@
 import tabsIds from '../../../src/reduxRelated/reducers/tabsIds'
-import updateSite from '../../../src/reduxRelated/actions/index'
+import updateSite, {deleteTabData} from '../../../src/reduxRelated/actions/index'
 import { addTabInfoToAction } from './utils'
 let  expectedNextState, previousState, action, reducerOutput;
 
@@ -38,4 +38,25 @@ describe('UPDATE_SITE  action', () =>{
     expect(reducerOutput).toEqual(expectedNextState)
   });
 
+});
+
+
+describe('DELETE_TAB_DATA action', () =>{
+
+  test('deletes the tabId from the array present in the state', () => {
+
+    action = deleteTabData({
+      site: 'http://mydomain.com',
+      tabId: 1,
+    });
+
+    previousState = [2,1];
+
+    expectedNextState = [2];
+
+    reducerOutput = tabsIds(previousState, action);
+
+    expect(reducerOutput).toEqual(expectedNextState)
+
+  });
 });
