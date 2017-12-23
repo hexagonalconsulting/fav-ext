@@ -1,5 +1,10 @@
 import tabs from '../../../src/reduxRelated/reducers/tabs'
-import updateSite, {toggleAutoRefresh, deleteTabData, setTabAsWatchedForTabClosedEvent} from "../../../src/reduxRelated/actions/index";
+import updateSite, {
+  toggleAutoRefresh,
+  deleteTabData,
+  setTabAsWatchedForTabClosedEvent,
+  setTabAsWatchedForTabUpdatedEvent
+} from "../../../src/reduxRelated/actions/index";
 import { addTabInfoToAction } from './utils'
 let  expectedNextState, previousState, action, reducerOutput;
 
@@ -292,4 +297,83 @@ describe('SET_TAB_AS_WATCHED_FOR_TAB_CLOSED_EVENT action', () => {
     expect(reducerOutput).toEqual(expectedNextState)
 
   })
+});
+
+describe('SET_TAB_AS_WATCHED_FOR_TAB_UPDATED_EVENT action', () => {
+
+  test('updates the field watchedForUpdatedEvent in the related tab object to true', () => {
+
+    action = setTabAsWatchedForTabUpdatedEvent({
+      tabId: 1
+    });
+
+    previousState = {
+      '1': {
+        autoRefresh: true,
+        watchedForCloseEvent: false,
+        watchedForUpdatedEvent: false
+      },
+      '2': {
+        autoRefresh: false,
+        watchedForCloseEvent: false,
+        watchedForUpdatedEvent: false
+      }
+    };
+
+    expectedNextState ={
+      '1': {
+        autoRefresh: true,
+        watchedForCloseEvent: false,
+        watchedForUpdatedEvent: true
+      },
+      '2': {
+        autoRefresh: false,
+        watchedForCloseEvent: false,
+        watchedForUpdatedEvent: false
+      }
+    };
+
+    reducerOutput = tabs(previousState, action);
+
+    expect(reducerOutput).toEqual(expectedNextState)
+
+  });
+
+  test('creates the field watchedForUpdatedEvent if does not exists in the related tab object, ands sets it to true', () => {
+
+    action = setTabAsWatchedForTabUpdatedEvent({
+      tabId: 1
+    });
+
+    previousState = {
+      '1': {
+        autoRefresh: true,
+        watchedForCloseEvent: false,
+      },
+      '2': {
+        autoRefresh: false,
+        watchedForCloseEvent: false,
+        watchedForUpdatedEvent: false
+      }
+    };
+
+    expectedNextState ={
+      '1': {
+        autoRefresh: true,
+        watchedForCloseEvent: false,
+        watchedForUpdatedEvent: true
+      },
+      '2': {
+        autoRefresh: false,
+        watchedForCloseEvent: false,
+        watchedForUpdatedEvent: false
+      }
+    };
+
+    reducerOutput = tabs(previousState, action);
+
+    expect(reducerOutput).toEqual(expectedNextState)
+
+  });
+
 });

@@ -2,7 +2,8 @@ import {
   UPDATE_SITE,
   TOGGLE_AUTOREFRESH,
   DELETE_TAB_DATA,
-  SET_TAB_AS_WATCHED_FOR_TAB_CLOSED_EVENT
+  SET_TAB_AS_WATCHED_FOR_TAB_CLOSED_EVENT,
+  SET_TAB_AS_WATCHED_FOR_TAB_UPDATED_EVENT
 } from '../actions/index'
 
 export default function (state = {}, action) {
@@ -46,6 +47,18 @@ export default function (state = {}, action) {
         [tabId]: {
           ...state[tabId],
           watchedForCloseEvent: true,
+        }
+      };
+
+    case SET_TAB_AS_WATCHED_FOR_TAB_UPDATED_EVENT:
+
+      tabId = action.tabId;
+
+      return {
+        ...state,
+        [tabId]: {
+          ...state[tabId],
+          watchedForUpdatedEvent: true,
         }
       };
 

@@ -42,10 +42,9 @@ export function setTabAsWatchedForTabClosedEvent({tabId}) {
   }
 }
 
-export function setTabAsWatchedForTabUpdatedEvent({ site, tabId}) {
+export function setTabAsWatchedForTabUpdatedEvent({ tabId }) {
   return {
     type: SET_TAB_AS_WATCHED_FOR_TAB_UPDATED_EVENT,
-    site,
     tabId,
   }
 }
