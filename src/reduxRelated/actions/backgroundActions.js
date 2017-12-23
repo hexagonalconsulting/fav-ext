@@ -6,20 +6,20 @@ import {
   setTabAsWatchedForTabUpdatedEvent
 } from './index'
 
+function tabIsAlreadyWatchedForThatEvent( { tabs, tabsIds }, tabId, property) {
+
+  return tabsIds.includes(tabId) ? !!tabs[tabId][property] : false;
+}
+
 function asyncWatchForClosedTab(action) {
 
   return function (dispatch, getState) {
-
-    const { tabs, tabsIds } = getState();
-    const { domain } = action;
     const {id: tabId } = action._sender.tab;
 
-    let tabIsAlreadyWatchedForCloseEvent = tabsIds.includes(tabId)
-      ? !!tabs[tabId].watchedForCloseEvent
-      : false;
+    const watchedForCloseEvent = tabIsAlreadyWatchedForThatEvent( getState(), tabId, 'watchedForCloseEvent');
+    if ( !watchedForCloseEvent ) {
 
-    if (!tabIsAlreadyWatchedForCloseEvent) {
-
+        const { domain } = action;
         addListenerForTabCloseEvent({ tabId, dispatch, site: domain});
         dispatch( setTabAsWatchedForTabClosedEvent({ tabId }) )
 
@@ -57,17 +57,13 @@ function addListenerForTabUpdatedEvent({ tabId, dispatch, domain}) {
 
 function asyncWatchForTabUpdated(action) {
   return function (dispatch, getState) {
-
-    const { tabs, tabsIds  } = getState();
-    const { domain } = action;
     const {id: tabId } = action._sender.tab;
 
-    let tabIsAlreadyWatchedForUpdatedEvent = tabsIds.includes(tabId)
-      ? !!tabs[tabId].watchedForUpdatedEvent
-      : false;
+    const watchedForUpdatedEvent = tabIsAlreadyWatchedForThatEvent( getState(), tabId, 'watchedForUpdatedEvent');
 
-    if (!tabIsAlreadyWatchedForUpdatedEvent) {
+    if (!watchedForUpdatedEvent) {
 
+      const { domain } = action;
       addListenerForTabUpdatedEvent({ tabId, dispatch, domain});
       dispatch( setTabAsWatchedForTabUpdatedEvent({ tabId }) )
 
