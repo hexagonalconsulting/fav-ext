@@ -1,6 +1,7 @@
 import {
   UPDATE_SITE,
   TOGGLE_AUTOREFRESH,
+  DELETE_TAB_DATA
 } from '../actions/index'
 
 export default function (state = {}, action) {
@@ -29,6 +30,11 @@ export default function (state = {}, action) {
           autoRefresh
         }
       };
+
+    case DELETE_TAB_DATA:
+      const nextState = {...state};
+      delete nextState[tabId];
+      return nextState;
 
     default:
 

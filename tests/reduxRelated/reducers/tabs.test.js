@@ -1,5 +1,5 @@
 import tabs from '../../../src/reduxRelated/reducers/tabs'
-import updateSite, {toggleAutoRefresh} from "../../../src/reduxRelated/actions/index";
+import updateSite, {toggleAutoRefresh, deleteTabData} from "../../../src/reduxRelated/actions/index";
 import { addTabInfoToAction } from './utils'
 let  expectedNextState, previousState, action, reducerOutput;
 
@@ -177,4 +177,41 @@ describe('TOGGLE_AUTOREFRESH  action', () => {
 
   })
 
+});
+
+describe('DELETE_TAB_DATA  action', () => {
+
+  test('works and preserves other tab object data', () => {
+
+    action = addTabInfoToAction(deleteTabData({
+      site: 'http://mydomain.com',
+      tabId: 1
+    }));
+
+    previousState = {
+      '1': {
+        autoRefresh: true,
+        watchedForCloseEvent: true,
+        watchedForUpdatedEvent: true
+      },
+      '2': {
+        autoRefresh: false,
+        watchedForCloseEvent: false,
+        watchedForUpdatedEvent: false
+      }
+    };
+
+    expectedNextState = {
+      '2': {
+        autoRefresh: false,
+        watchedForCloseEvent: false,
+        watchedForUpdatedEvent: false
+      }
+    };
+
+    reducerOutput = tabs(previousState, action);
+
+    expect(reducerOutput).toEqual(expectedNextState)
+
+  })
 });
