@@ -1,7 +1,8 @@
 import {
   UPDATE_SITE,
   TOGGLE_AUTOREFRESH,
-  DELETE_TAB_DATA
+  DELETE_TAB_DATA,
+  SET_TAB_AS_WATCHED_FOR_TAB_CLOSED_EVENT
 } from '../actions/index'
 
 export default function (state = {}, action) {
@@ -35,6 +36,18 @@ export default function (state = {}, action) {
       const nextState = {...state};
       delete nextState[tabId];
       return nextState;
+
+    case SET_TAB_AS_WATCHED_FOR_TAB_CLOSED_EVENT:
+
+      tabId = action.tabId;
+
+      return {
+        ...state,
+        [tabId]: {
+          ...state[tabId],
+          watchedForCloseEvent: true,
+        }
+      };
 
     default:
 

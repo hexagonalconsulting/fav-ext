@@ -35,10 +35,9 @@ export function deleteTabData({ site, tabId}) {
   }
 }
 
-export function setTabAsWatchedForTabClosedEvent({ site, tabId}) {
+export function setTabAsWatchedForTabClosedEvent({tabId}) {
   return {
     type: SET_TAB_AS_WATCHED_FOR_TAB_CLOSED_EVENT,
-    site,
     tabId,
   }
 }

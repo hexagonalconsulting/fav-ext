@@ -1,5 +1,5 @@
 import tabs from '../../../src/reduxRelated/reducers/tabs'
-import updateSite, {toggleAutoRefresh, deleteTabData} from "../../../src/reduxRelated/actions/index";
+import updateSite, {toggleAutoRefresh, deleteTabData, setTabAsWatchedForTabClosedEvent} from "../../../src/reduxRelated/actions/index";
 import { addTabInfoToAction } from './utils'
 let  expectedNextState, previousState, action, reducerOutput;
 
@@ -202,6 +202,84 @@ describe('DELETE_TAB_DATA  action', () => {
     };
 
     expectedNextState = {
+      '2': {
+        autoRefresh: false,
+        watchedForCloseEvent: false,
+        watchedForUpdatedEvent: false
+      }
+    };
+
+    reducerOutput = tabs(previousState, action);
+
+    expect(reducerOutput).toEqual(expectedNextState)
+
+  })
+});
+
+describe('SET_TAB_AS_WATCHED_FOR_TAB_CLOSED_EVENT action', () => {
+
+  test('updates the field watchedForCloseEvent in the related tab object to true', () => {
+
+    action = setTabAsWatchedForTabClosedEvent({
+      tabId: 1
+    });
+
+    previousState = {
+      '1': {
+        autoRefresh: true,
+        watchedForCloseEvent: false,
+        watchedForUpdatedEvent: true
+      },
+      '2': {
+        autoRefresh: false,
+        watchedForCloseEvent: false,
+        watchedForUpdatedEvent: false
+      }
+    };
+
+    expectedNextState ={
+      '1': {
+        autoRefresh: true,
+        watchedForCloseEvent: true,
+        watchedForUpdatedEvent: true
+      },
+      '2': {
+        autoRefresh: false,
+        watchedForCloseEvent: false,
+        watchedForUpdatedEvent: false
+      }
+    };
+
+    reducerOutput = tabs(previousState, action);
+
+    expect(reducerOutput).toEqual(expectedNextState)
+
+  });
+
+  test('creates the field watchedForCloseEvent if does not exists in the related tab object, ands sets it to true', () => {
+
+    action = setTabAsWatchedForTabClosedEvent({
+      tabId: 1
+    });
+
+    previousState = {
+      '1': {
+        autoRefresh: true,
+        watchedForUpdatedEvent: true
+      },
+      '2': {
+        autoRefresh: false,
+        watchedForCloseEvent: false,
+        watchedForUpdatedEvent: false
+      }
+    };
+
+    expectedNextState ={
+      '1': {
+        autoRefresh: true,
+        watchedForCloseEvent: true,
+        watchedForUpdatedEvent: true
+      },
       '2': {
         autoRefresh: false,
         watchedForCloseEvent: false,
