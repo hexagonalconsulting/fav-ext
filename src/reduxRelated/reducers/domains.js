@@ -54,6 +54,7 @@ export default function (state = {}, action) {
 
     case DELETE_TAB_DATA:
 
+      tabId = action.tabId;
       const filteredTabsIds = state[site].tabsIds.filter( (existentTabId) => existentTabId !== tabId);
 
       return {

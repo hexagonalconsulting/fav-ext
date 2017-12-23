@@ -179,12 +179,10 @@ describe('DELETE_TAB_DATA action', () => {
 
   test('deletes tabId from related  domain object associated tabsIds', () => {
 
-    action = addTabInfoToAction(
-      deleteTabData({
+    action = deleteTabData({
         site: 'http://mydomain.com',
         tabId: 1
-      })
-    );
+    });
 
     previousState = {
       'http://otherdomain.com': {
@@ -219,12 +217,10 @@ describe('DELETE_TAB_DATA action', () => {
 
   test('does preserve other ids present in the tabsIds array while deletes tabId', () => {
 
-    action = addTabInfoToAction(
-      deleteTabData({
+    action = deleteTabData({
         site: 'http://mydomain.com',
         tabId: 1
-      })
-    );
+    });
 
     previousState = {
       'http://otherdomain.com': {
