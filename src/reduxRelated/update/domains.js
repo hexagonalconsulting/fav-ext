@@ -1,5 +1,5 @@
 import api  from '../../utils/api'
-import updateSite from '../actions/index'
+import { autoUpdateSite } from '../actions/index'
 
 export default function (store) {
 
@@ -17,7 +17,7 @@ export default function (store) {
     if (autoUpdate && domainDataHasAtLeastOneTabOpen) {
       api.fetchChecksumLastUpdatedAt(site)
         .then(
-          lastUpdated => store.dispatch(updateSite({site, lastUpdated}))
+          lastUpdated => store.dispatch(autoUpdateSite({site, lastUpdated}))
         )
     }
   })

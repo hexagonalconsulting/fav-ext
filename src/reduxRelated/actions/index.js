@@ -1,4 +1,5 @@
 export const UPDATE_SITE = 'UPDATE_SITE';
+export const AUTO_UPDATE_SITE = 'AUTO_UPDATE_SITE';
 export const TOGGLE_AUTOREFRESH = 'TOGGLE_AUTOREFRESH';
 export const TOGGLE_UPDATES_FROM_SITE = 'TOGGLE_UPDATES_FROM_SITE';
 export const DELETE_TAB_DATA = 'DELETE_TAB_DATA';
@@ -12,6 +13,15 @@ export default function updateSite({ site, lastUpdated }) {
     lastUpdated,
   }
 }
+
+export function autoUpdateSite({ site, lastUpdated }) {
+  return {
+    type: AUTO_UPDATE_SITE,
+    site,
+    lastUpdated,
+  }
+}
+
 
 export function toggleAutoRefresh({ autoRefresh }) {
   return {

@@ -1,4 +1,5 @@
 import {
+  AUTO_UPDATE_SITE,
   UPDATE_SITE,
   TOGGLE_UPDATES_FROM_SITE,
   DELETE_TAB_DATA
@@ -26,6 +27,17 @@ export default function (state = {}, action) {
           ...state[site],
           lastUpdated,
           tabsIds: [...existingTabIds, tabId]
+        }
+      };
+
+    case AUTO_UPDATE_SITE:
+      const { lastUpdated: lastUpdatedVal } = action;
+
+      return {
+        ...state,
+        [site]: {
+          ...state[site],
+          lastUpdated: lastUpdatedVal,
         }
       };
 

@@ -1,5 +1,5 @@
 import domains from '../../../src/reduxRelated/reducers/domains'
-import updateSite, { toggleAutoUpdate, deleteTabData } from '../../../src/reduxRelated/actions/index'
+import updateSite, { toggleAutoUpdate, deleteTabData, autoUpdateSite } from '../../../src/reduxRelated/actions/index'
 let  expectedNextState, previousState, action, reducerOutput;
 import { addTabInfoToAction } from './utils'
 
@@ -257,4 +257,100 @@ describe('DELETE_TAB_DATA action', () => {
     expect(reducerOutput).toEqual(expectedNextState)
   })
 
+});
+
+describe('AUTO_UPDATE_SITE  action', () => {
+
+  test('it creates the lastUpdated field in the related domain object', () => {
+    action = autoUpdateSite({
+      site: 'http://mydomain.com',
+      lastUpdated: '2017-12-22T18:00:24+01:00'
+    });
+
+    previousState = {
+      'http://otherdomain.com': {
+        lastUpdated: "2017-12-22T18:00:24+01:00",
+
+      },
+      'http://mydomain.com': {
+      }
+    };
+
+    expectedNextState = {
+      'http://otherdomain.com': {
+        lastUpdated: "2017-12-22T18:00:24+01:00",
+
+      },
+      'http://mydomain.com': {
+        lastUpdated: '2017-12-22T18:00:24+01:00'
+      }
+    };
+
+    reducerOutput = domains(previousState, action);
+
+    expect(reducerOutput).toEqual(expectedNextState)
+  });
+
+  test('it updates the lastUpdated field in the related domain object', () => {
+    action = autoUpdateSite({
+      site: 'http://mydomain.com',
+      lastUpdated: '2017-12-22T18:00:24+01:00'
+    });
+
+    previousState = {
+      'http://otherdomain.com': {
+        lastUpdated: "2017-12-22T18:00:24+01:00",
+
+      },
+      'http://mydomain.com': {
+        lastUpdated: '2017-12-22T17:00:24+01:00'
+      }
+    };
+
+    expectedNextState = {
+      'http://otherdomain.com': {
+        lastUpdated: "2017-12-22T18:00:24+01:00",
+      },
+      'http://mydomain.com': {
+        lastUpdated: '2017-12-22T18:00:24+01:00'
+      }
+    };
+
+    reducerOutput = domains(previousState, action);
+
+    expect(reducerOutput).toEqual(expectedNextState)
+  });
+
+
+  test('it preserves data in other fields in the related domain object', () => {
+    action = autoUpdateSite({
+      site: 'http://mydomain.com',
+      lastUpdated: '2017-12-22T18:00:24+01:00'
+    });
+
+    previousState = {
+      'http://otherdomain.com': {
+        lastUpdated: "2017-12-22T18:00:24+01:00",
+
+      },
+      'http://mydomain.com': {
+        lastUpdated: '2017-12-22T17:00:24+01:00',
+        tabsIds: [1,2,3,4]
+      }
+    };
+
+    expectedNextState = {
+      'http://otherdomain.com': {
+        lastUpdated: "2017-12-22T18:00:24+01:00",
+      },
+      'http://mydomain.com': {
+        lastUpdated: '2017-12-22T18:00:24+01:00',
+        tabsIds: [1,2,3,4]
+      }
+    };
+
+    reducerOutput = domains(previousState, action);
+
+    expect(reducerOutput).toEqual(expectedNextState)
+  });
 });
