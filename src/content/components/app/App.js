@@ -102,13 +102,15 @@ class App extends Component {
 
   render() {
 
-    const {domains, tabs} = this.props;
-    const {domain} = this;
-    const thisDomainData = domains[domain];
-    let
-      lastUpdated,
-      autoRefresh,
+    const {
       autoUpdate,
+      lastUpdated,
+      tabs,
+      tabsIds
+    } = this.props;
+
+    let
+      autoRefresh,
       timestampsNeitherIsNull,
       upToDateIndicatorColor,
       timestampsAreEqual;
@@ -119,18 +121,19 @@ class App extends Component {
       handleToggleAutoUpdate,
       neitherIsNull
     } = this;
+
     const { lastUpdated: tabLastUpdated, tabId }  = this.state;
 
-    if (domains && thisDomainData) {
-      lastUpdated = thisDomainData.lastUpdated;
-      autoUpdate  = thisDomainData.autoUpdate;
-      autoRefresh = (  (tabs  || {} )[tabId]  || {}  ).autoRefresh;
-      autoRefresh =   !!autoRefresh ;
+    timestampsNeitherIsNull = neitherIsNull(lastUpdated, tabLastUpdated);
 
-      timestampsNeitherIsNull = neitherIsNull(lastUpdated, tabLastUpdated);
 
-      shouldAutoRefresh(lastUpdated, autoRefresh, timestampsNeitherIsNull);
+    if (tabsIds.includes(tabId)) {
+      autoRefresh =  !!tabs[tabId].autoRefresh
+    } else {
+      autoRefresh = false;
     }
+
+    shouldAutoRefresh(lastUpdated, autoRefresh, timestampsNeitherIsNull);
 
     const flexContainer = {
       display: 'flex',
@@ -209,13 +212,24 @@ class App extends Component {
 }
 
 const mapStateToProps = (state) => {
-
   const domain = document.location.origin;
-  const {domains} = state;
-  const thereIsADomain = (domains || {} )[domain];
+  const {domains, domainsIds, tabs, tabsIds} = state;
+
+  let lastUpdated,  autoUpdate;
+
+  if ( domainsIds.includes(domain) ) {
+    autoUpdate = !!domains[domain].autoUpdate;
+    lastUpdated = domains[domain].lastUpdated ? domains[domain].lastUpdated : null
+  } else {
+    lastUpdated = null;
+    autoUpdate = false
+  }
+
   return {
-    domains: domains ? domains : {},
-    tabs: (thereIsADomain || {})['tabs']
+    autoUpdate,
+    lastUpdated,
+    tabs,
+    tabsIds
   }
 };
 
