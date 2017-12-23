@@ -1,8 +1,7 @@
 import {
   UPDATE_SITE,
   TOGGLE_UPDATES_FROM_SITE,
-  DELETE_TAB_DATA,
-  SET_TAB_AS_WATCHED_FOR_TAB_UPDATED_EVENT
+  DELETE_TAB_DATA
 } from '../actions/index'
 
 export default function (state = {}, action) {
@@ -51,14 +50,6 @@ export default function (state = {}, action) {
           ...state[site],
           tabsIds: filteredTabsIds
         }
-      };
-
-    case  SET_TAB_AS_WATCHED_FOR_TAB_UPDATED_EVENT:
-
-      const { tabId: tabIdWatchedForUpdatedEvent } = action;
-
-      return {
-        ...state,
       };
 
     default:
