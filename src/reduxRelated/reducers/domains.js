@@ -5,7 +5,6 @@ import {
   SET_TAB_AS_WATCHED_FOR_TAB_CLOSED_EVENT,
   SET_TAB_AS_WATCHED_FOR_TAB_UPDATED_EVENT
 } from '../actions/index'
-import tabsIds from "./tabsIds";
 
 export default function (state = {}, action) {
 
