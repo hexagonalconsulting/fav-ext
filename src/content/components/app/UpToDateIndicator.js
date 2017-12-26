@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types';
 import customizedPulseLoader from './customizedPulseLoader'
 
 
@@ -24,6 +25,11 @@ const UpToDateIndicator = ({timestampsNeitherIsNull, timestampsAreEqual}) => {
       }
     </div>
   )
+};
+
+UpToDateIndicator.propTypes = {
+  timestampsNeitherIsNull: PropTypes.bool.isRequired,
+  timestampsAreEqual: PropTypes.bool.isRequired,
 };
 
 export default UpToDateIndicator;
