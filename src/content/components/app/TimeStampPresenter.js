@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types';
 import customizedPulseLoader from './customizedPulseLoader'
 import TimeAgo from 'timeago-react'
 
@@ -9,5 +10,9 @@ const TimeStampPresenter = ({timeStamp, description}) => (
   </div>
 );
 
+TimeStampPresenter.propTypes = {
+  description: PropTypes.string.isRequired,
+  timeStamp: PropTypes.string,
+};
 
 export default TimeStampPresenter;
