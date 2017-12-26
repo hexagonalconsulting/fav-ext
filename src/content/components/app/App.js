@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import ToggleButton from 'react-toggle-button'
 import api from '../../../utils/api'
 import TimeStampPresenter  from './TimeStampPresenter'
-import customizedPulseLoader from './customizedPulseLoader'
+import UpToDateIndicator  from './UpToDateIndicator'
 import updateSite, {toggleAutoRefresh, toggleAutoUpdate} from '../../../reduxRelated/actions/index'
 import {
   SET_LISTENER_WATCH_FOR_TAB_CLOSED,
@@ -112,7 +112,6 @@ class App extends Component {
     let
       autoRefresh,
       timestampsNeitherIsNull,
-      upToDateIndicatorColor,
       timestampsAreEqual;
 
     const {
@@ -147,11 +146,6 @@ class App extends Component {
 
     timestampsAreEqual = lastUpdated === tabLastUpdated;
 
-    // Color code meanings, upToDateIndicatorColor will either be:
-    //'#00C851' => green success
-    //'#ffbb33' => orange warning
-    timestampsNeitherIsNull && ( upToDateIndicatorColor = { color: timestampsAreEqual ? '#00C851' : '#ffbb33' });
-
     const autoRefreshPopupMessage = "When is on, the page will refresh automatically if it is not up to date with the app.";
     const autoUpdatePopupMessage  = "Automatically get data from the app to figure out when it is updated.";
 
@@ -168,13 +162,10 @@ class App extends Component {
           timeStamp={tabLastUpdated}
         />
 
-        <div style={ {...{ fontWeight: 'bold', width: 150, textAlign: 'center' }, ...upToDateIndicatorColor} }>
-          { !timestampsNeitherIsNull && customizedPulseLoader /* Show the customizedPulseLoader as long either of the timestamps is null. */}
-          { timestampsNeitherIsNull && (timestampsAreEqual
-              ? 'UP TO DATE'
-              : 'NOT UP TO DATE')
-          }
-        </div>
+        <UpToDateIndicator
+          timestampsNeitherIsNull={timestampsNeitherIsNull}
+          timestampsAreEqual={timestampsAreEqual}
+        />
 
         <div title={autoRefreshPopupMessage}>
           Auto refresh:{' '}
