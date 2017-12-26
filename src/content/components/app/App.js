@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import ToggleButton from 'react-toggle-button'
 import api from '../../../utils/api'
 import TimeStampPresenter  from './TimeStampPresenter'
 import UpToDateIndicator  from './UpToDateIndicator'
+import CustomizedToggle  from './CustomizedToggle'
 import updateSite, {toggleAutoRefresh, toggleAutoUpdate} from '../../../reduxRelated/actions/index'
 import {
   SET_LISTENER_WATCH_FOR_TAB_CLOSED,
@@ -146,8 +146,10 @@ class App extends Component {
 
     timestampsAreEqual = lastUpdated === tabLastUpdated;
 
-    const autoRefreshPopupMessage = "When is on, the page will refresh automatically if it is not up to date with the app.";
-    const autoUpdatePopupMessage  = "Automatically get data from the app to figure out when it is updated.";
+    const AUTO_REFRESH_POPUP_MESSAGE = 'When is on, the page will refresh automatically if it is not up to date with the app.';
+    const AUTO_UPDATE_POPUP_MESSAGE  = 'Automatically get data from the app to figure out when it is updated.';
+    const AUTO_UPDATE_DESCRIPTION    = 'Automatic polling';
+    const AUTO_REFRESH_DESCRIPTION   = 'Auto refresh';
 
     return (
       <div style={flexContainer}>
@@ -167,26 +169,19 @@ class App extends Component {
           timestampsAreEqual={timestampsAreEqual}
         />
 
-        <div title={autoRefreshPopupMessage}>
-          Auto refresh:{' '}
-          <div style={{ display: 'inline-block' }}>
-            <ToggleButton
-              value={ autoRefresh }
-              onToggle={ () => handleToggleAutoRefresh(autoRefresh) }
-            />
-          </div>
-        </div>
+        <CustomizedToggle
+          popUpMessage={AUTO_REFRESH_POPUP_MESSAGE}
+          description={AUTO_REFRESH_DESCRIPTION}
+          value={ autoRefresh }
+          onToggle={ () => handleToggleAutoRefresh(autoRefresh) }
+        />
 
-        <div title={autoUpdatePopupMessage}>
-          Automatic polling:{' '}
-          <div style={{ display: 'inline-block' }}>
-            <ToggleButton
-              value={ autoUpdate }
-              onToggle={ () => handleToggleAutoUpdate(autoUpdate) }
-            />
-          </div>
-
-        </div>
+        <CustomizedToggle
+          popUpMessage={AUTO_UPDATE_POPUP_MESSAGE}
+          description={AUTO_UPDATE_DESCRIPTION}
+          value={ autoUpdate }
+          onToggle={ () => handleToggleAutoUpdate(autoUpdate)  }
+        />
 
       </div>
     );
