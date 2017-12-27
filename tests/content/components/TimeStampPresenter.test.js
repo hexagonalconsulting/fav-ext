@@ -8,16 +8,16 @@ import timekeeper from 'timekeeper'
 
 describe('TimeStampPresenter', () =>{
 
-  beforeAll(() => {
-    const instant = new Date('2017-12-27T01:00:00+01:00');
-    return timekeeper.freeze(instant);
-  });
-
-  afterAll(() => {
-    return timekeeper.reset();
-  });
-
   describe('shows the time that has passed since the timestamp it receives', () => {
+
+    beforeAll(() => {
+      const instant = new Date('2017-12-27T01:00:00+01:00');
+      return timekeeper.freeze(instant);
+    });
+
+    afterAll(() => {
+      return timekeeper.reset();
+    });
 
     test('10 minutes from the given timestamp', () => {
       const componentWrapper = render(
