@@ -18,6 +18,12 @@ export class App extends Component {
       lastUpdated: null,
       tabId: false
     };
+
+    this.requestTabId                  = this.requestTabId.bind(this);
+    this.fetchAppLastUpdatedTimestamp  = this.fetchAppLastUpdatedTimestamp.bind(this);
+    this.watchForThisTabOnCloseEvent   = this.watchForThisTabOnCloseEvent.bind(this);
+    this.watchForThisTabOnUpdatedEvent = this.watchForThisTabOnUpdatedEvent.bind(this);
+
   }
 
   handleToggleAutoRefresh = (autoRefresh) => {
@@ -41,7 +47,7 @@ export class App extends Component {
 
   };
 
-  fetchAppLastUpdatedTimestamp = () =>  {
+  fetchAppLastUpdatedTimestamp() {
 
     const { dispatch, domain } = this.props;
 
@@ -56,14 +62,14 @@ export class App extends Component {
       );
   };
 
-  requestTabId = () => {
+  requestTabId() {
     // This ask the background page, (in our case a script) for the tab id in which the component is running.
     chrome.runtime.sendMessage({ request: "get tabId" }, ({tabId}) => {
       this.setState({tabId});
     })
   };
 
-  watchForThisTabOnCloseEvent = () => {
+  watchForThisTabOnCloseEvent() {
 
     const { dispatch, domain } = this.props;
     // this sets initiates the alias action of type 'SET_LISTENER_WATCH_FOR_TAB_CLOSED',
@@ -73,7 +79,8 @@ export class App extends Component {
 
   };
 
-  watchForThisTabOnUpdatedEvent = () => {
+  watchForThisTabOnUpdatedEvent() {
+    // this is very similar to watchForThisTabOnCloseEvent(), but for the action SET_LISTENER_WATCH_FOR_TAB_UPDATED.
 
     const { dispatch, domain } = this.props;
 
@@ -90,13 +97,13 @@ export class App extends Component {
       watchForThisTabOnUpdatedEvent,
     } = this;
 
+    requestTabId();
+
     watchForThisTabOnCloseEvent();
 
     watchForThisTabOnUpdatedEvent();
 
     fetchAppLastUpdatedTimestamp();
-
-    requestTabId()
 
   }
 
