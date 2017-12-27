@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TimeStampPresenter when does not receive a timestamp string shows the loader 1`] = `
+<div
+  style={
+    Object {
+      "width": 240,
+    }
+  }
+>
+  my description
+  :
+   
+  <div
+    style={
+      Object {
+        "display": "inline-block",
+      }
+    }
+  >
+    <div>
+      <div
+        className="css-msggfa"
+      />
+      <div
+        className="css-dyhi6e"
+      />
+      <div
+        className="css-1q065sq"
+      />
+    </div>
+  </div>
+</div>
+`;
