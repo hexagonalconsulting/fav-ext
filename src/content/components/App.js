@@ -1,14 +1,14 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import api from '../../../utils/api'
+import api from '../../utils/api'
 import TimeStampPresenter  from './TimeStampPresenter'
 import UpToDateIndicator  from './UpToDateIndicator'
 import CustomizedToggle  from './CustomizedToggle'
-import updateSite, {toggleAutoRefresh, toggleAutoUpdate} from '../../../reduxRelated/actions/index'
+import updateSite, {toggleAutoRefresh, toggleAutoUpdate} from '../../reduxRelated/actions/index'
 import {
   SET_LISTENER_WATCH_FOR_TAB_CLOSED,
   SET_LISTENER_WATCH_FOR_TAB_UPDATED
-} from '../../../reduxRelated/actions/backgroundActions'
+} from '../../reduxRelated/actions/backgroundActions'
 
 class App extends Component {
   constructor(props) {
