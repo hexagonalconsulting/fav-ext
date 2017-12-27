@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from "prop-types";
 import {connect} from 'react-redux';
 import api from '../../utils/api'
 import TimeStampPresenter  from './TimeStampPresenter'
@@ -10,14 +11,13 @@ import {
   SET_LISTENER_WATCH_FOR_TAB_UPDATED
 } from '../../reduxRelated/actions/backgroundActions'
 
-class App extends Component {
+export class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       lastUpdated: null,
       tabId: false
     };
-    this.domain = document.location.origin
   }
 
   handleToggleAutoRefresh = (autoRefresh) => {
@@ -25,7 +25,8 @@ class App extends Component {
   };
 
   handleToggleAutoUpdate =  autoUpdate  => {
-    this.props.dispatch( toggleAutoUpdate({ site: this.domain , autoUpdate: !autoUpdate }) );
+    const { dispatch, domain } = this.props;
+    dispatch( toggleAutoUpdate({ site: domain , autoUpdate: !autoUpdate }) );
   };
 
   shouldAutoRefresh = (lastUpdated, autoRefresh, timestampsNeitherIsNull) => {
@@ -41,11 +42,14 @@ class App extends Component {
   };
 
   fetchAppLastUpdatedTimestamp = () =>  {
-    api.fetchChecksumLastUpdatedAt(this.domain)
+
+    const { dispatch, domain } = this.props;
+
+    api.fetchChecksumLastUpdatedAt(domain)
       .then(
         lastUpdated => {
 
-          this.props.dispatch(updateSite({ site: this.domain , lastUpdated }));
+          dispatch(updateSite({ site: domain , lastUpdated }));
           this.setState({lastUpdated})
 
         }
@@ -61,8 +65,7 @@ class App extends Component {
 
   watchForThisTabOnCloseEvent = () => {
 
-    const { domain } = this;
-    const { dispatch } = this.props;
+    const { dispatch, domain } = this.props;
     // this sets initiates the alias action of type 'SET_LISTENER_WATCH_FOR_TAB_CLOSED',
     // which will setup add listener on the close event of this tab to delete the key for this tab from the redux state,
     // but only if it is not already set.
@@ -72,8 +75,7 @@ class App extends Component {
 
   watchForThisTabOnUpdatedEvent = () => {
 
-    const { domain } = this;
-    const { dispatch } = this.props;
+    const { dispatch, domain } = this.props;
 
     dispatch({ type: SET_LISTENER_WATCH_FOR_TAB_UPDATED, domain })
 
@@ -188,6 +190,14 @@ class App extends Component {
   }
 }
 
+App.propTypes = {
+  domain: PropTypes.string.isRequired,
+  autoUpdate: PropTypes.bool.isRequired,
+  lastUpdated: PropTypes.string,
+  tabs: PropTypes.object.isRequired,
+  tabsIds: PropTypes.array.isRequired,
+};
+
 const mapStateToProps = (state) => {
   const domain = document.location.origin;
   const {domains, domainsIds, tabs, tabsIds} = state;
@@ -206,7 +216,8 @@ const mapStateToProps = (state) => {
     autoUpdate,
     lastUpdated,
     tabs,
-    tabsIds
+    tabsIds,
+    domain
   }
 };
 
