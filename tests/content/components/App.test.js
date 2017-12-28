@@ -5,6 +5,19 @@ import sinon from 'sinon'
 import  '../../enzymeConfig'
 import { mount } from 'enzyme';
 
+function mountWithMockedDispatch(mockedDispatch) {
+  mount(
+    <App
+      autoUpdate={false}
+      lastUpdated={null}
+      tabs={{'1': []}}
+      tabsIds={[1]}
+      dispatch={mockedDispatch}
+      domain={"https://mydomian.com"}
+    />
+  );
+}
+
 describe('App', () => {
 
   describe('calls all setup functions on componentDidMount()', () => {
@@ -23,17 +36,7 @@ describe('App', () => {
       sinon.spy(App.prototype,'watchForThisTabOnCloseEvent' );
       sinon.spy(App.prototype,'watchForThisTabOnUpdatedEvent' );
 
-      const fakeDispatch = function () {};
-      return mount(
-        <App
-          autoUpdate={false}
-          lastUpdated={null}
-          tabs={{'1': []}}
-          tabsIds={[1]}
-          dispatch={fakeDispatch}
-          domain={"https://mydomian.com"}
-        />
-      );
+      mountWithMockedDispatch( function() {} )
 
     });
 
@@ -60,6 +63,24 @@ describe('App', () => {
       expect(App.prototype.watchForThisTabOnUpdatedEvent.calledOnce).toBe(true)
 
     })
+
+  });
+
+  describe('dispatches actions related to setting listeners for tab events', () => {
+
+    test('SET_LISTENER_WATCH_FOR_TAB_UPDATED', () => {
+      const mockedDispatch = jest.fn();
+      mountWithMockedDispatch(mockedDispatch);
+      const  action = { type: 'SET_LISTENER_WATCH_FOR_TAB_CLOSED', domain: "https://mydomian.com" };
+      expect(mockedDispatch).toBeCalledWith(action)
+    });
+
+    test('SET_LISTENER_WATCH_FOR_TAB_CLOSED', () => {
+      const mockedDispatch = jest.fn();
+      mountWithMockedDispatch(mockedDispatch);
+      const  action = { type: 'SET_LISTENER_WATCH_FOR_TAB_UPDATED', domain: "https://mydomian.com" };
+      expect(mockedDispatch).toBeCalledWith(action)
+    });
 
   });
 
