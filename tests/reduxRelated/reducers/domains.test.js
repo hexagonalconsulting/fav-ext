@@ -95,6 +95,42 @@ describe('UPDATE_SITE  action', () => {
     reducerOutput = domains(previousState, action);
 
     expect(reducerOutput).toEqual(expectedNextState)
+  });
+
+  test('it preserves data already present in the related existent domain object', () => {
+    action = addTabInfoToAction(
+      updateSite({site: 'http://mydomain.com', lastUpdated: "2017-12-22T19:43:24+01:00"})
+    );
+
+    previousState = {
+      'http://otherdomain.com': {
+        lastUpdated: "2017-12-22T18:00:24+01:00",
+        tabsIds: [2]
+      },
+      'http://mydomain.com': {
+        lastUpdated: "2017-12-22T15:00:24+01:00",
+        tabsIds: [3,4,5],
+        showDebugBar: true,
+        autoUpdate: false,
+      }
+    };
+
+    expectedNextState = {
+      'http://otherdomain.com': {
+        lastUpdated: "2017-12-22T18:00:24+01:00",
+        tabsIds: [2]
+      },
+      'http://mydomain.com': {
+        lastUpdated: "2017-12-22T19:43:24+01:00",
+        tabsIds: [3,4,5,1],
+        showDebugBar: true,
+        autoUpdate: false,
+      }
+    };
+
+    reducerOutput = domains(previousState, action);
+
+    expect(reducerOutput).toEqual(expectedNextState)
   })
 
 });
@@ -331,7 +367,9 @@ describe('AUTO_UPDATE_SITE  action', () => {
       },
       'http://mydomain.com': {
         lastUpdated: '2017-12-22T17:00:24+01:00',
-        tabsIds: [1,2,3,4]
+        tabsIds: [1,2,3,4],
+        showDebugBar: true,
+        autoUpdate: false,
       }
     };
 
@@ -341,7 +379,9 @@ describe('AUTO_UPDATE_SITE  action', () => {
       },
       'http://mydomain.com': {
         lastUpdated: '2017-12-22T18:00:24+01:00',
-        tabsIds: [1,2,3,4]
+        tabsIds: [1,2,3,4],
+        showDebugBar: true,
+        autoUpdate: false,
       }
     };
 
