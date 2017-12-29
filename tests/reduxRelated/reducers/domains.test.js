@@ -100,7 +100,7 @@ describe('UPDATE_SITE  action', () => {
 });
 
 
-describe('UPDATE_SITE  action', () => {
+describe('TOGGLE_UPDATES_FROM_SITE  action', () => {
 
   test('it creates the autoUpdate field in the related domain object' , () => {
     action = toggleAutoUpdate({
