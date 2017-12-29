@@ -106,54 +106,54 @@ describe('App', () => {
       expect(tree).not.toBe(null)
 
     });
-  });
 
-  test('renders null if `showDebugBar` is false', () => {
+		test('renders null if `showDebugBar` is false', () => {
 
-    const component = renderer.create(
-      <App
-        autoUpdate={false}
-        lastUpdated={null}
-        tabs={{'1': []}}
-        tabsIds={[1]}
-        dispatch={function(){}}
-        domain={"https://mydomian.com"}
-        showDebugBar={false}
-      />
-    );
+			const component = renderer.create(
+				<App
+					autoUpdate={false}
+					lastUpdated={null}
+					tabs={{'1': []}}
+					tabsIds={[1]}
+					dispatch={function(){}}
+					domain={"https://mydomian.com"}
+					showDebugBar={false}
+				/>
+			);
 
-    let tree = component.toJSON();
-    expect(tree).toBe(null)
+			let tree = component.toJSON();
+			expect(tree).toBe(null)
 
-  });
+		});
 
-  test('renders null if `showDebugBar` is undefined', () => {
+		test('renders null if `showDebugBar` is undefined', () => {
 
-    let consoleErrorMessage;
-    const CONSOLE_ERROR_MESSAGE =
-      'Warning: Failed prop type: The prop `showDebugBar` is marked as required in `App`, but its value is `undefined`.'
-      + '\n' + '    in App';
-    // All this does is prepare to catch the console error message mocking the implementation.
-    const consoleSpy = jest.spyOn(console, 'error').mockImplementation((message) => consoleErrorMessage = message);
+			let consoleErrorMessage;
+			const CONSOLE_ERROR_MESSAGE =
+				'Warning: Failed prop type: The prop `showDebugBar` is marked as required in `App`, but its value is `undefined`.'
+				+ '\n' + '    in App';
+			// All this does is prepare to catch the console error message mocking the implementation.
+			const consoleSpy = jest.spyOn(console, 'error').mockImplementation((message) => consoleErrorMessage = message);
 
-    const component = renderer.create(
-      <App
-        autoUpdate={false}
-        lastUpdated={null}
-        tabs={{'1': []}}
-        tabsIds={[1]}
-        dispatch={function(){}}
-        domain={"https://mydomian.com"}
-      />
-    );
+			const component = renderer.create(
+				<App
+					autoUpdate={false}
+					lastUpdated={null}
+					tabs={{'1': []}}
+					tabsIds={[1]}
+					dispatch={function(){}}
+					domain={"https://mydomian.com"}
+				/>
+			);
 
-    let tree = component.toJSON();
+			let tree = component.toJSON();
 
-    expect(consoleSpy).toHaveBeenCalled();
-    consoleSpy.mockRestore();
-    expect(consoleErrorMessage).toEqual(CONSOLE_ERROR_MESSAGE);
-    expect(tree).toBe(null)
+			expect(consoleSpy).toHaveBeenCalled();
+			consoleSpy.mockRestore();
+			expect(consoleErrorMessage).toEqual(CONSOLE_ERROR_MESSAGE);
+			expect(tree).toBe(null)
 
+		});
   });
 
 });
