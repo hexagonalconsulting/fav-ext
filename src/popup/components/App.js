@@ -1,19 +1,10 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 import  {toggleShowDebugBar} from '../../reduxRelated/actions/index'
 import  CustomizedToggle from '../../content/components/CustomizedToggle'
 
-export class App extends Component {
-  constructor(props) {
-    super(props);
-  }
+export function App({ showDebugBar, toggleShowDebugBar, domain }) {
 
-  render() {
-    const {
-    	showDebugBar,
-			toggleShowDebugBar,
-			domain
-    } = this.props;
     const POPUP_MESSAGE = 'Toggles on and off the showing of the debug bar.';
     const DESCRIPTION = 'DebugBar';
 
@@ -27,7 +18,6 @@ export class App extends Component {
 			/>
 
 		)
-  }
 }
 
 const mapStateToProps = (state, OwnProps) => {
