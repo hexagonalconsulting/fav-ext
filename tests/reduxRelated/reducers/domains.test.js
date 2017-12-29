@@ -1,5 +1,10 @@
 import domains from '../../../src/reduxRelated/reducers/domains'
-import updateSite, { toggleAutoUpdate, deleteTabData, autoUpdateSite } from '../../../src/reduxRelated/actions/index'
+import updateSite, {
+  toggleAutoUpdate,
+  deleteTabData,
+  autoUpdateSite,
+  toggleShowDebugBar
+} from '../../../src/reduxRelated/actions/index'
 let  expectedNextState, previousState, action, reducerOutput;
 import { addTabInfoToAction } from './utils'
 
@@ -389,4 +394,81 @@ describe('AUTO_UPDATE_SITE  action', () => {
 
     expect(reducerOutput).toEqual(expectedNextState)
   });
+});
+
+describe('TOGGLE_SHOW_DEBUG_BAR  action', () => {
+
+  test('it creates the showDebugBar field in the related domain object, and preserves other  existent data' , () => {
+    action = toggleShowDebugBar({
+      site: 'http://mydomain.com',
+      showDebugBar: true
+    });
+
+    previousState = {
+      'http://otherdomain.com': {
+        lastUpdated: "2017-12-22T18:00:24+01:00",
+        tabsIds: [2]
+      },
+      'http://mydomain.com': {
+        lastUpdated: "2017-12-22T18:00:24+01:00",
+        tabsIds: [1],
+        autoUpdate: false
+      }
+    };
+
+    expectedNextState = {
+      'http://otherdomain.com': {
+        lastUpdated: "2017-12-22T18:00:24+01:00",
+        tabsIds: [2]
+      },
+      'http://mydomain.com': {
+        showDebugBar: true,
+        lastUpdated: "2017-12-22T18:00:24+01:00",
+        tabsIds: [1],
+        autoUpdate: false
+      }
+    };
+
+    reducerOutput = domains(previousState, action);
+
+    expect(reducerOutput).toEqual(expectedNextState)
+  });
+
+  test('it updates the showDebugBar field in the related domain object' , () => {
+    action = toggleShowDebugBar({
+      site: 'http://mydomain.com',
+      showDebugBar: false
+    });
+
+    previousState = {
+      'http://otherdomain.com': {
+        lastUpdated: "2017-12-22T18:00:24+01:00",
+        tabsIds: [2],
+        showDebugBar: false,
+      },
+      'http://mydomain.com': {
+        lastUpdated: "2017-12-22T18:00:24+01:00",
+        tabsIds: [1],
+        showDebugBar: true
+      }
+    };
+
+    expectedNextState = {
+      'http://otherdomain.com': {
+        lastUpdated: "2017-12-22T18:00:24+01:00",
+        tabsIds: [2],
+        showDebugBar: false
+      },
+      'http://mydomain.com': {
+        showDebugBar: false,
+        lastUpdated: "2017-12-22T18:00:24+01:00",
+        tabsIds: [1]
+      }
+    };
+
+    reducerOutput = domains(previousState, action);
+
+    expect(reducerOutput).toEqual(expectedNextState)
+  })
+
 });
