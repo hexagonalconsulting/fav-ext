@@ -9,7 +9,7 @@ import {
 export default function (state = {}, action) {
 
   let tabId;
-  if (action._sender) {
+  if (action._sender && action._sender.tab) {
     tabId = action._sender.tab.id;
   }
 
