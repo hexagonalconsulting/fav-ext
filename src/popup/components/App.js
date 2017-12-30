@@ -25,14 +25,7 @@ const mapStateToProps = (state, OwnProps) => {
   const { domain } = OwnProps ;
 	const { domains, domainsIds } = state;
 
-	let showDebugBar;
-
-	if ( domainsIds.includes(domain) ) {
-		showDebugBar = !!domains[domain].showDebugBar;
-
-	} else {
-		showDebugBar = false;
-	}
+	const showDebugBar = domainsIds.includes(domain) ? !!domains[domain].showDebugBar : false;
 
 	return {
 		showDebugBar
