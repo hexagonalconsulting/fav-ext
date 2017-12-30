@@ -7,7 +7,7 @@ export function App({ showDebugBar, toggleShowDebugBar, domain }) {
 
     const POPUP_MESSAGE = 'Toggles on and off the showing of the debug bar.';
     const DESCRIPTION = 'DebugBar';
-    const FAVEOD = 'faveod';
+    const FAVEOD = '.dev.faveod.com';
 		const NOT_RECOGNIZED_TITLE = 'The tab url does not contain the string `faveod`.';
 		const NOT_RECOGNIZED_MESSAGE = 'Url was not recognized as a faveod app...';
 
