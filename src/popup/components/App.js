@@ -7,15 +7,24 @@ export function App({ showDebugBar, toggleShowDebugBar, domain }) {
 
     const POPUP_MESSAGE = 'Toggles on and off the showing of the debug bar.';
     const DESCRIPTION = 'DebugBar';
+    const FAVEOD = 'faveod';
+		const NOT_RECOGNIZED_TITLE = 'The tab url does not contain the string `faveod`.';
+		const NOT_RECOGNIZED_MESSAGE = 'Url was not recognized as a faveod app...';
 
     return(
 
-			<CustomizedToggle
-				popUpMessage={POPUP_MESSAGE}
-				description={DESCRIPTION}
-				value={ showDebugBar }
-				onToggle={ () => toggleShowDebugBar({domain, showDebugBar}) }
-			/>
+			domain.includes(FAVEOD)
+				?
+				<CustomizedToggle
+					popUpMessage={POPUP_MESSAGE}
+					description={DESCRIPTION}
+					value={ showDebugBar }
+					onToggle={ () => toggleShowDebugBar({domain, showDebugBar}) }
+				/>
+				:
+				<span title={NOT_RECOGNIZED_TITLE}>
+					{NOT_RECOGNIZED_MESSAGE}
+				</span>
 
 		)
 }
