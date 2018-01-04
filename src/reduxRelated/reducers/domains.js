@@ -2,14 +2,15 @@ import {
   AUTO_UPDATE_SITE,
   UPDATE_SITE,
   TOGGLE_UPDATES_FROM_SITE,
-  DELETE_TAB_DATA
+  DELETE_TAB_DATA,
+  TOGGLE_SHOW_DEBUG_BAR
 } from '../actions/index'
 
 export default function (state = {}, action) {
 
   const { site } = action;
   let tabId;
-  if(action._sender) {
+  if(action._sender && action._sender.tab) {
     tabId = action._sender.tab.id;
   }
 
@@ -62,6 +63,18 @@ export default function (state = {}, action) {
         [site]: {
           ...state[site],
           tabsIds: filteredTabsIds
+        }
+      };
+
+
+    case TOGGLE_SHOW_DEBUG_BAR:
+      const { showDebugBar } = action;
+
+      return {
+        ...state,
+        [site]: {
+          ...state[site],
+          showDebugBar,
         }
       };
 

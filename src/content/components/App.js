@@ -112,11 +112,16 @@ export class App extends Component {
   render() {
 
     const {
+      showDebugBar,
       autoUpdate,
       lastUpdated,
       tabs,
       tabsIds
     } = this.props;
+
+    if ( showDebugBar === undefined || !showDebugBar) {
+      return null
+    }
 
     let
       autoRefresh,
@@ -200,6 +205,7 @@ export class App extends Component {
 App.propTypes = {
   domain: PropTypes.string.isRequired,
   autoUpdate: PropTypes.bool.isRequired,
+  showDebugBar: PropTypes.bool.isRequired,
   lastUpdated: PropTypes.string,
   tabs: PropTypes.object.isRequired,
   tabsIds: PropTypes.array.isRequired,
@@ -209,17 +215,20 @@ const mapStateToProps = (state) => {
   const domain = document.location.origin;
   const {domains, domainsIds, tabs, tabsIds} = state;
 
-  let lastUpdated,  autoUpdate;
+  let lastUpdated,  autoUpdate, showDebugBar;
 
   if ( domainsIds.includes(domain) ) {
+    showDebugBar = !!domains[domain].showDebugBar;
     autoUpdate = !!domains[domain].autoUpdate;
     lastUpdated = domains[domain].lastUpdated ? domains[domain].lastUpdated : null
   } else {
     lastUpdated = null;
-    autoUpdate = false
+    autoUpdate = false;
+    showDebugBar = false;
   }
 
   return {
+    showDebugBar,
     autoUpdate,
     lastUpdated,
     tabs,
