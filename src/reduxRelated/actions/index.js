@@ -1,4 +1,5 @@
 export const UPDATE_SITE = 'UPDATE_SITE';
+export const AUTO_UPDATE_SITE = 'AUTO_UPDATE_SITE';
 export const TOGGLE_AUTOREFRESH = 'TOGGLE_AUTOREFRESH';
 export const TOGGLE_UPDATES_FROM_SITE = 'TOGGLE_UPDATES_FROM_SITE';
 export const DELETE_TAB_DATA = 'DELETE_TAB_DATA';
@@ -13,10 +14,18 @@ export default function updateSite({ site, lastUpdated }) {
   }
 }
 
-export function toggleAutoRefresh({ site, autoRefresh }) {
+export function autoUpdateSite({ site, lastUpdated }) {
+  return {
+    type: AUTO_UPDATE_SITE,
+    site,
+    lastUpdated,
+  }
+}
+
+
+export function toggleAutoRefresh({ autoRefresh }) {
   return {
     type: TOGGLE_AUTOREFRESH,
-    site,
     autoRefresh,
   }
 }
@@ -36,18 +45,16 @@ export function deleteTabData({ site, tabId}) {
   }
 }
 
-export function setTabAsWatchedForTabClosedEvent({ site, tabId}) {
+export function setTabAsWatchedForTabClosedEvent({tabId}) {
   return {
     type: SET_TAB_AS_WATCHED_FOR_TAB_CLOSED_EVENT,
-    site,
     tabId,
   }
 }
 
-export function setTabAsWatchedForTabUpdatedEvent({ site, tabId}) {
+export function setTabAsWatchedForTabUpdatedEvent({ tabId }) {
   return {
     type: SET_TAB_AS_WATCHED_FOR_TAB_UPDATED_EVENT,
-    site,
     tabId,
   }
 }
