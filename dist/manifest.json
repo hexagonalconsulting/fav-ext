@@ -22,5 +22,9 @@
   ],
   "permissions": [
     "tabs"
-  ]
+  ],
+  // This is not really an update url. Is just that currently (Chrome Version 63.0.3239.108) a crx extension
+  // that is not present in the chrome store will need a update_url to work.
+  // Here were are adding the one from the repo because having this field with a valid url will make it work.
+  "update_url": "https://github.com/hexagonalconsulting/fav-ext"
 }
