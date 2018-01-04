@@ -10,7 +10,7 @@ import {
   SET_LISTENER_WATCH_FOR_TAB_UPDATED,
   setListenerWatchForTabUpdated
 } from "./actions/backgroundActions";
-
+import initialState from  './initialState'
 
 const aliases = {
   // this key is the name of the action to proxy, the value is the action
@@ -28,11 +28,12 @@ const logger = createLogger({
 
 const store = createStore(
   rootReducer,
+  initialState,
   applyMiddleware(
     alias(aliases),
     thunk,
     logger
-  )
+  ),
 );
 
 wrapStore(store, {

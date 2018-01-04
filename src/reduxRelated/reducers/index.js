@@ -1,9 +1,12 @@
 import {combineReducers} from 'redux';
-
-import count from './count';
 import domains from './domains';
+import domainsIds from './domainsIds';
+import tabs from './tabs';
+import tabsIds from './tabsIds';
 
 export default combineReducers({
-  count,
-  domains
+  domains,
+  domainsIds,
+  tabs,
+  tabsIds
 });

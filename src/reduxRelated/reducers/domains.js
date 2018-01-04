@@ -1,47 +1,44 @@
 import {
+  AUTO_UPDATE_SITE,
   UPDATE_SITE,
-  TOGGLE_AUTOREFRESH,
   TOGGLE_UPDATES_FROM_SITE,
   DELETE_TAB_DATA,
-  SET_TAB_AS_WATCHED_FOR_TAB_CLOSED_EVENT,
-  SET_TAB_AS_WATCHED_FOR_TAB_UPDATED_EVENT
+  TOGGLE_SHOW_DEBUG_BAR
 } from '../actions/index'
 
 export default function (state = {}, action) {
 
   const { site } = action;
-  const tabsExists = !!( (state[site] || {} )['tabs'] );
-  let tabIdEntryExist;
+  let tabId;
+  if(action._sender && action._sender.tab) {
+    tabId = action._sender.tab.id;
+  }
 
   switch (action.type) {
 
     case UPDATE_SITE:
       const { lastUpdated } = action;
+      let existingTabIds;
+      existingTabIds = state[site] ? [...state[site].tabsIds] : [];
+      existingTabIds = existingTabIds.filter((existingtabId) => existingtabId !== tabId);
 
       return {
-
         ...state,
         [site]: {
           ...state[site],
-          lastUpdated
+          lastUpdated,
+          tabsIds: [...existingTabIds, tabId]
         }
-
       };
 
-    case TOGGLE_AUTOREFRESH:
-      const tabId = action._sender.tab.id;
-      const { autoRefresh } = action;
+    case AUTO_UPDATE_SITE:
+      const { lastUpdated: lastUpdatedVal } = action;
+
       return {
         ...state,
         [site]: {
           ...state[site],
-          tabs: {
-            ...state[site].tabs,
-            [tabId]: {
-              ...state[site].tabs[tabId],
-              autoRefresh,
-            }
-          }
+          lastUpdated: lastUpdatedVal,
         }
       };
 
@@ -50,7 +47,7 @@ export default function (state = {}, action) {
 
       return {
         ...state,
-        [site]: {
+        [site] : {
           ...state[site],
           autoUpdate
         }
@@ -58,60 +55,26 @@ export default function (state = {}, action) {
 
     case DELETE_TAB_DATA:
 
-      const { tabId: tabIdToDelete } = action;
-      const deepCopyOfTabs = JSON.parse(JSON.stringify(state[site].tabs));
+      tabId = action.tabId;
+      const filteredTabsIds = state[site].tabsIds.filter( (existentTabId) => existentTabId !== tabId);
 
-      // `delete` operator will return true on successful deletion, else false.
-      if (delete deepCopyOfTabs[tabIdToDelete]) {
-
-        return {
-          ...state,
-          [site]: {
-            ...state[site],
-            tabs: {
-              ...deepCopyOfTabs // Which by this time in execution does not contain `tabIdToDelete`.
-            }
-          }
-        };
-
-      } else {
-        throw `Something went wrong in the reducer, case DELETE_TAB_DATA:  deleting ${tabIdToDelete} from ${JSON.stringify(deepCopyOfTabsInState)}`;
-      }
-
-    case SET_TAB_AS_WATCHED_FOR_TAB_CLOSED_EVENT:
-
-      const { tabId: tabIdWatchedForCloseEvent } = action;
-      tabIdEntryExist = !!( tabsExists && (state[site]['tabs'] || {} )[tabIdWatchedForCloseEvent]);
       return {
         ...state,
         [site]: {
           ...state[site],
-          tabs: {
-            ...(tabsExists ? state[site]['tabs'] : {}),
-            [tabIdWatchedForCloseEvent]: {
-              ...(tabIdEntryExist ? state[site]['tabs'][tabIdWatchedForCloseEvent] : {} ),
-              watchedForCloseEvent: true
-            }
-          }
+          tabsIds: filteredTabsIds
         }
       };
 
-    case  SET_TAB_AS_WATCHED_FOR_TAB_UPDATED_EVENT:
 
-      const { tabId: tabIdWatchedForUpdatedEvent } = action;
-      tabIdEntryExist = !!( tabsExists && (state[site]['tabs'] || {} )[tabIdWatchedForUpdatedEvent]);
+    case TOGGLE_SHOW_DEBUG_BAR:
+      const { showDebugBar } = action;
 
       return {
         ...state,
         [site]: {
           ...state[site],
-          tabs: {
-            ...(tabsExists ? state[site]['tabs'] : {}),
-            [tabIdWatchedForUpdatedEvent]: {
-              ...(tabIdEntryExist ? state[site]['tabs'][tabIdWatchedForUpdatedEvent] : {} ),
-              watchedForUpdatedEvent: true
-            }
-          }
+          showDebugBar,
         }
       };
 
