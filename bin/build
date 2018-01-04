@@ -2,7 +2,7 @@ echo 'set -e ---------------------------------------------'
 set -e
 
 echo 'npm install ----------------------------------------'
-npm install
+#npm install
 
 echo 'yarn run build  ------------------------------------'
 yarn run build
