@@ -1,23 +1,29 @@
 import React, {Component} from 'react';
+import PropTypes from "prop-types";
 import {connect} from 'react-redux';
-import ToggleButton from 'react-toggle-button'
-import api from '../../../utils/api'
-import TimeAgo from 'timeago-react'
-import { PulseLoader } from 'react-spinners';
-import updateSite, {toggleAutoRefresh, toggleAutoUpdate} from '../../../reduxRelated/actions/index'
+import api from '../../utils/api'
+import TimeStampPresenter  from './TimeStampPresenter'
+import UpToDateIndicator  from './UpToDateIndicator'
+import CustomizedToggle  from './CustomizedToggle'
+import updateSite, {toggleAutoRefresh, toggleAutoUpdate} from '../../reduxRelated/actions/index'
 import {
   SET_LISTENER_WATCH_FOR_TAB_CLOSED,
   SET_LISTENER_WATCH_FOR_TAB_UPDATED
-} from '../../../reduxRelated/actions/backgroundActions'
+} from '../../reduxRelated/actions/backgroundActions'
 
-class App extends Component {
+export class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       lastUpdated: null,
       tabId: false
     };
-    this.domain = document.location.origin
+
+    this.requestTabId                  = this.requestTabId.bind(this);
+    this.fetchAppLastUpdatedTimestamp  = this.fetchAppLastUpdatedTimestamp.bind(this);
+    this.watchForThisTabOnCloseEvent   = this.watchForThisTabOnCloseEvent.bind(this);
+    this.watchForThisTabOnUpdatedEvent = this.watchForThisTabOnUpdatedEvent.bind(this);
+
   }
 
   handleToggleAutoRefresh = (autoRefresh) => {
@@ -25,7 +31,8 @@ class App extends Component {
   };
 
   handleToggleAutoUpdate =  autoUpdate  => {
-    this.props.dispatch( toggleAutoUpdate({ site: this.domain , autoUpdate: !autoUpdate }) );
+    const { dispatch, domain } = this.props;
+    dispatch( toggleAutoUpdate({ site: domain , autoUpdate: !autoUpdate }) );
   };
 
   shouldAutoRefresh = (lastUpdated, autoRefresh, timestampsNeitherIsNull) => {
@@ -40,29 +47,31 @@ class App extends Component {
 
   };
 
-  fetchAppLastUpdatedTimestamp = () =>  {
-    api.fetchChecksumLastUpdatedAt(this.domain)
+  fetchAppLastUpdatedTimestamp() {
+
+    const { dispatch, domain } = this.props;
+
+    api.fetchChecksumLastUpdatedAt(domain)
       .then(
         lastUpdated => {
 
-          this.props.dispatch(updateSite({ site: this.domain , lastUpdated }));
+          dispatch(updateSite({ site: domain , lastUpdated }));
           this.setState({lastUpdated})
 
         }
       );
   };
 
-  requestTabId = () => {
+  requestTabId() {
     // This ask the background page, (in our case a script) for the tab id in which the component is running.
     chrome.runtime.sendMessage({ request: "get tabId" }, ({tabId}) => {
       this.setState({tabId});
     })
   };
 
-  watchForThisTabOnCloseEvent = () => {
+  watchForThisTabOnCloseEvent() {
 
-    const { domain } = this;
-    const { dispatch } = this.props;
+    const { dispatch, domain } = this.props;
     // this sets initiates the alias action of type 'SET_LISTENER_WATCH_FOR_TAB_CLOSED',
     // which will setup add listener on the close event of this tab to delete the key for this tab from the redux state,
     // but only if it is not already set.
@@ -70,10 +79,10 @@ class App extends Component {
 
   };
 
-  watchForThisTabOnUpdatedEvent = () => {
+  watchForThisTabOnUpdatedEvent() {
+    // this is very similar to watchForThisTabOnCloseEvent(), but for the action SET_LISTENER_WATCH_FOR_TAB_UPDATED.
 
-    const { domain } = this;
-    const { dispatch } = this.props;
+    const { dispatch, domain } = this.props;
 
     dispatch({ type: SET_LISTENER_WATCH_FOR_TAB_UPDATED, domain })
 
@@ -88,13 +97,13 @@ class App extends Component {
       watchForThisTabOnUpdatedEvent,
     } = this;
 
+    requestTabId();
+
     watchForThisTabOnCloseEvent();
 
     watchForThisTabOnUpdatedEvent();
 
     fetchAppLastUpdatedTimestamp();
-
-    requestTabId()
 
   }
 
@@ -112,7 +121,6 @@ class App extends Component {
     let
       autoRefresh,
       timestampsNeitherIsNull,
-      upToDateIndicatorColor,
       timestampsAreEqual;
 
     const {
@@ -147,69 +155,55 @@ class App extends Component {
 
     timestampsAreEqual = lastUpdated === tabLastUpdated;
 
-    // Color code meanings, upToDateIndicatorColor will either be:
-    //'#00C851' => green success
-    //'#ffbb33' => orange warning
-    timestampsNeitherIsNull && ( upToDateIndicatorColor = { color: timestampsAreEqual ? '#00C851' : '#ffbb33' });
-
-    const pulseLoader = (
-
-      <div style={{ display: 'inline-block' }}>
-        <PulseLoader size={3} margin={'2px'} />
-      </div>
-
-    );
-
-    const autoRefreshPopupMessage = "When is on, the page will refresh automatically if it is not up to date with the app.";
-    const autoUpdatePopupMessage  = "Automatically get data from the app to figure out when it is updated.";
-    const timestampContainerStyle = { width: 240};
+    const AUTO_REFRESH_POPUP_MESSAGE = 'When is on, the page will refresh automatically if it is not up to date with the app.';
+    const AUTO_UPDATE_POPUP_MESSAGE  = 'Automatically get data from the app to figure out when it is updated.';
+    const AUTO_UPDATE_DESCRIPTION    = 'Automatic polling';
+    const AUTO_REFRESH_DESCRIPTION   = 'Auto refresh';
 
     return (
       <div style={flexContainer}>
 
-        <div style={timestampContainerStyle}>
-          App last updated:{' '}
-          { !!lastUpdated ? <TimeAgo datetime={lastUpdated} locale='en' style={{ fontWeight: 'bold' }}/> : pulseLoader }
-        </div>
+        <TimeStampPresenter
+          description={'App last updated'}
+          timeStamp={lastUpdated}
+        />
 
-        <div style={timestampContainerStyle}>
-          Tab last updated:{' '}
-          { !!tabLastUpdated ? <TimeAgo datetime={tabLastUpdated} locale='en' style={{ fontWeight: 'bold' }}/> : pulseLoader }
-        </div>
+        <TimeStampPresenter
+          description={'Tab last updated'}
+          timeStamp={tabLastUpdated}
+        />
 
-        <div style={ {...{ fontWeight: 'bold', width: 150, textAlign: 'center' }, ...upToDateIndicatorColor} }>
-          { !timestampsNeitherIsNull && pulseLoader /* Show the pulseLoader as long either of the timestamps is null. */}
-          { timestampsNeitherIsNull && (timestampsAreEqual
-              ? 'UP TO DATE'
-              : 'NOT UP TO DATE')
-          }
-        </div>
+        <UpToDateIndicator
+          timestampsNeitherIsNull={timestampsNeitherIsNull}
+          timestampsAreEqual={timestampsAreEqual}
+        />
 
-        <div title={autoRefreshPopupMessage}>
-          Auto refresh:{' '}
-          <div style={{ display: 'inline-block' }}>
-            <ToggleButton
-              value={ autoRefresh }
-              onToggle={ () => handleToggleAutoRefresh(autoRefresh) }
-            />
-          </div>
-        </div>
+        <CustomizedToggle
+          popUpMessage={AUTO_REFRESH_POPUP_MESSAGE}
+          description={AUTO_REFRESH_DESCRIPTION}
+          value={ autoRefresh }
+          onToggle={ () => handleToggleAutoRefresh(autoRefresh) }
+        />
 
-        <div title={autoUpdatePopupMessage}>
-          Automatic polling:{' '}
-          <div style={{ display: 'inline-block' }}>
-            <ToggleButton
-              value={ autoUpdate }
-              onToggle={ () => handleToggleAutoUpdate(autoUpdate) }
-            />
-          </div>
-
-        </div>
+        <CustomizedToggle
+          popUpMessage={AUTO_UPDATE_POPUP_MESSAGE}
+          description={AUTO_UPDATE_DESCRIPTION}
+          value={ autoUpdate }
+          onToggle={ () => handleToggleAutoUpdate(autoUpdate)  }
+        />
 
       </div>
     );
   }
 }
+
+App.propTypes = {
+  domain: PropTypes.string.isRequired,
+  autoUpdate: PropTypes.bool.isRequired,
+  lastUpdated: PropTypes.string,
+  tabs: PropTypes.object.isRequired,
+  tabsIds: PropTypes.array.isRequired,
+};
 
 const mapStateToProps = (state) => {
   const domain = document.location.origin;
@@ -229,7 +223,8 @@ const mapStateToProps = (state) => {
     autoUpdate,
     lastUpdated,
     tabs,
-    tabsIds
+    tabsIds,
+    domain
   }
 };
 

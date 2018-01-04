@@ -1,0 +1,95 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`shows the loader when both timestamps are null 1`] = `
+<div
+  style={
+    Object {
+      "fontWeight": "bold",
+      "textAlign": "center",
+      "width": 150,
+    }
+  }
+>
+  <div
+    style={
+      Object {
+        "display": "inline-block",
+      }
+    }
+  >
+    <div>
+      <div
+        className="css-msggfa"
+      />
+      <div
+        className="css-dyhi6e"
+      />
+      <div
+        className="css-1q065sq"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`shows the loader when there is a null value in the timestamps 1`] = `
+<div
+  style={
+    Object {
+      "fontWeight": "bold",
+      "textAlign": "center",
+      "width": 150,
+    }
+  }
+>
+  <div
+    style={
+      Object {
+        "display": "inline-block",
+      }
+    }
+  >
+    <div>
+      <div
+        className="css-msggfa"
+      />
+      <div
+        className="css-dyhi6e"
+      />
+      <div
+        className="css-1q065sq"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`shows the tab is "NOT UP TO DATE" if the timestamps are not equal 1`] = `
+<div
+  style={
+    Object {
+      "color": "#ffbb33",
+      "fontWeight": "bold",
+      "textAlign": "center",
+      "width": 150,
+    }
+  }
+>
+  NOT UP TO DATE
+</div>
+`;
+
+exports[`shows the tab is "UP TO DATE" if the timestamps are equal 1`] = `
+<div
+  style={
+    Object {
+      "color": "#00C851",
+      "fontWeight": "bold",
+      "textAlign": "center",
+      "width": 150,
+    }
+  }
+>
+  UP TO DATE
+</div>
+`;
